@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom'
+import { toast } from "react-toastify";
+
 import sallySvg1 from "../assets/SalySvg1.svg";
 import sallySvg2 from "../assets/SalySvg2.svg";
 import linkSvg from "../assets/LinkSvg.svg";
 import Navbar from "../components/navbar/navbar";
 import { useAuth } from "../context/customAuth";
 import { getUserInfo, userRegistration } from '../apis/users'
+
+import { randomMaleAvatar, randomFemaleAvatar } from "../constant/avatarResolver";
 
 import "./Signup.css";
 
@@ -34,7 +38,7 @@ const Signup = () => {
         if(profile.birthdate != "0"){
           navigate('/profile');
         }
-      })
+      });
     
   }, [entityInfo]);
 
@@ -69,24 +73,32 @@ const Signup = () => {
   };
 
   const handleCreate = () => {
-    const bdate = new Date('10-05-1994');
     const userObject = {
       fName: fname,
       lName: lname,
       bio: description,
-      avatar: 'boy',
+      avatar: Number(gender) === 0 ? randomMaleAvatar() : randomFemaleAvatar(),
       city: 'Mum',
       country: 'India',
       birthdate: Number(new Date('10-05-1994')/1000),
-      gender: gender,
+      gender: Number(gender),
     }
 
-    console.log(userObject);
-    userRegistration(account, userObject);
-    
-    setTimeout(() => {
-      console.log("Redirect to profile !");
-    }, 10000);
+    userRegistration(account, userObject)
+      .then(receipt => {
+        toast.success('Successfuly logged in !!', {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        console.log("Redirect to dash(home.jsx) !");
+        navigate('/home');
+      })
   };
 
 
@@ -149,7 +161,7 @@ const Signup = () => {
                 value={account}
                 onChange={handleAccountChange}
               >
-                <option value="" disabled selected hidden></option>
+                <option value="" disabled defaultChecked hidden></option>
                 { entityInfo && <option value={entityInfo.address}>{ entityInfo.address }</option> }
               </select>
             </div>
