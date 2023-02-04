@@ -119,6 +119,7 @@ const Middle = () => {
                     <LikeCount>20 Likes</LikeCount>
                 </LikeFlex>
             </PostContainer>
+
             {/* <PostContainer></PostContainer>
             <PostContainer></PostContainer> */}
         </PostsFlexbox>
