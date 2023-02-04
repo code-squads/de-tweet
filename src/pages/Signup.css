@@ -1,11 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
-body{
-    background-color: #F8F9FB;
-
+body {
+  background-color: #f8f9fb;
 }
 .signup {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   overflow: hidden;
 }
 
@@ -18,120 +17,120 @@ body{
 
 /* Flex 1 styling  */
 
-
 .flex-1 {
   flex: 1;
 }
 
-.title{
+.title {
   width: 65%;
   margin: 15%;
 }
-.primary-title{
+.primary-title {
   font-size: 32px;
   font-weight: 500;
   margin-bottom: 4%;
   color: #202020;
 }
-.secondary-title{
+.secondary-title {
   font-size: 18px;
   color: #606060;
 }
-.sally-img2{
+.sally-img2 {
   position: absolute;
-    margin-top: -40px;
+  margin-top: -40px;
 }
-.sally-img1{
+.sally-img1 {
   position: absolute;
- justify-content: center;
- margin: 15% 0 0 10%;
+  justify-content: center;
+  margin: 15% 0 0 10%;
 }
 
 /* Flex 2 styling */
 
 .flex-2 {
-    flex: 1;
-  }
-
-.signup-form{
-    display: flex;
-    flex-wrap: wrap;
-    margin: 15% 10%;
-}
-input{
-
-    box-shadow: 0px 8px 24px #F1F4FB;
-    height: 40px;
-    
-}
-.left-container{
-    margin-right: 25px;
-
-}
-.label{
-    font-size: 14px;
-    font-weight: 500;
-    color: #828282;
-    margin-bottom: 7px;
-    margin-top: 30px;
-}
-.name-input{
-    border: 1px solid #E0E0E0;
-    width: 250px;
-    border-radius: 5px;
-    
+  flex: 1;
 }
 
-.account-input{
-    border: 1px solid #E0E0E0;
-
-    width: 385px;
-    border-radius: 5px;
+.signup-form {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 15% 10%;
 }
-.link-svg{
+input {
+  padding-left: 20px;
+  box-shadow: 0px 8px 24px #f1f4fb;
+  height: 40px;
+  color: #4e4d4d;
+  font-size: 14px;
+}
+.left-container {
+  margin-right: 25px;
+}
+.label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #828282;
+  margin-bottom: 7px;
+  margin-top: 30px;
+}
+.name-input {
+  border: 1px solid #e0e0e0;
+  width: 230px;
+  border-radius: 5px;
+}
+
+.account-input {
+  border: 1px solid #e0e0e0;
+  width: 387px;
+  border-radius: 5px;
+}
+.link-svg {
   margin-top: 2px;
   margin-bottom: -2px;
   margin-right: 2px;
   margin-left: -2px;
 }
-.connect-btn{
-    color: #1977F2;
-    padding: 11.5px 25px;
-    border: 1px solid #E0E0E0;
-    border-radius: 5px;
-    margin-top: 25px;
-    font-size: 14px;
-    background-color: #ffffff;
+.connect-btn {
+  color: #1977f2;
+  padding: 11.5px 25px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  margin-top: 25px;
+  font-size: 14px;
+  background-color: #ffffff;
 }
-select{
-    border: 1px solid #E0E0E0;
-    width: 250px;
-    height: 45px;
-    border-radius: 5px;
-    padding: 0px 15px;
+select {
+  border: 1px solid #e0e0e0;
+  width: 250px;
+  height: 45px;
+  border-radius: 5px;
+  padding: 0px 15px;
 }
-.description-input{
-  border: 1px solid #E0E0E0;
+.date-input{
+  height: 45px !important;
+  width: 255px !important;
+}
 
-    width: 525px;
-    border-radius: 5px;
+.description-input {
+  border: 1px solid #e0e0e0;
+
+  width: 506px;
+  border-radius: 5px;
 }
-.create-btn{
-  background-color: #1977F2;
+.create-btn {
+  background-color: #1977f2;
   border: none;
   border-radius: 5px;
   padding: 12px 30px;
   font-size: 14px;
   color: #ffffff;
-
 }
-.signin-text{
-
+.signin-text {
   margin-top: 40px;
 }
-.signin-btn{
+.signin-btn {
   border: none;
   background-color: transparent;
   font-size: 14px;
-  color: #1977F2;
+  color: #1977f2;
 }
