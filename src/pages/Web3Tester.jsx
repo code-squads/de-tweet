@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useMetamask } from 'use-metamask'
 
 import DeTweetContract from '../apis/DeTweetContract'
@@ -56,6 +56,18 @@ const Web3Tester = () => {
     console.log("Metamask state", metaState);
   }, [metaState])
 
+
+
+
+  // IPFS
+  const [files, setFiles] = useState([]);
+  const uploadFiles = (e) => {
+    const fileToUpload = e.target.files[0];
+    console.log(fileToUpload)
+
+  }
+
+
   return (
     <div>
       <h3>
@@ -91,6 +103,9 @@ const Web3Tester = () => {
             </button>
           </>
         }
+
+        <br/><br/>
+        <input type="file" accept="image/*" onChange={uploadFiles} />
       </h3>
     </div>
   )

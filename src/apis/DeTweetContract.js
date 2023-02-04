@@ -10,7 +10,9 @@ if (typeof window.ethereum !== 'undefined') {
     console.log('MetaMask is installed !');
 }
 
-const web3 = new Web3(Web3.givenProvider);
+export const linkFromTxHash = txHash => 'https://mumbai.polygonscan.com/tx/' + txHash;
+
+export const web3 = new Web3(Web3.givenProvider);
 
 const DeTweetContract = new web3.eth.Contract(deTweetABI, detweetAddress);
 
@@ -23,4 +25,5 @@ const DeTweetContract = new web3.eth.Contract(deTweetABI, detweetAddress);
 console.log("DeTweet contract methods:", DeTweetContract.methods);
 
 window.DeTweetContract = DeTweetContract;
+
 export default DeTweetContract;

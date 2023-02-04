@@ -1,4 +1,47 @@
-import DeTweetContract from "./DeTweetContract";
+import DeTweetContract, { web3, linkFromTxHash } from "./DeTweetContract";
+
+export const userRegistration = (address, userInfo) => new Promise(async (resolve, reject) => {
+  if(!address)
+    return reject("Invalid address");
+
+    const tx = DeTweetContract.methods.userRegistration(
+      userInfo.lname,
+      userInfo.fname,
+      userInfo.bio,
+      userInfo.avatar,
+      userInfo.city,
+      userInfo.country,
+      userInfo.birthdate,
+      userInfo.gender,
+    );
+    console.log("New record transaction: ", tx);
+  
+    const gasPrice = await web3.eth.getGasPrice();
+    const gas = (await tx.estimateGas({ from: address })) + 20000;
+    console.log(gas, gasPrice);
+    
+
+    try {
+      const receipt = await tx.send({
+        from: address,
+        gas,
+        gasPrice,
+      });
+      console.log(receipt);
+      console.log(`Transaction hash: ${receipt.transactionHash}`);
+      console.log(
+        `View the transaction here: `,
+        linkFromTxHash(receipt.transactionHash)
+      );
+      return receipt;
+    } catch (err) {
+      console.log(
+        "Some error sending record approval transaction from account:",
+        address
+      );
+      console.log(err);
+    }
+})
 
 export const getUserInfo = address => new Promise((resolve, reject) => {
   if(!address)
