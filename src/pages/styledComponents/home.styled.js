@@ -5,7 +5,7 @@ export const Container = styled.div`
     height: calc(100vh - 55px);
     display: flex;
     flex-direction: row;
-    background-color: yellow;
+    /* background-color: yellow; */
 `
 
 export const LeftContainer = styled.div`
@@ -34,7 +34,7 @@ export const RightContainer = styled.div`
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    background-color: green;
+    /* background-color: green; */
     padding: 40px 30px 25px 15px;
 `
 
