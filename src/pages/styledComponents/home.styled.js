@@ -24,6 +24,7 @@ export const MiddleContainer = styled.div`
     flex-direction: column;
     box-sizing: border-box;
     padding: 40px 15px 25px 15px;
+    /* overflow: auto; */
 `
 
 export const RightContainer = styled.div`
