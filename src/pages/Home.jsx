@@ -1,8 +1,19 @@
 import React from 'react'
+import Navbar from '../components/navbar/navbar'
+import { Container, LeftContainer, MiddleContainer, RightContainer } from './styledComponents/home.styled'
 
 const Home = () => {
   return (
-    <div>Home for loggedin users</div>
+    <>
+      <Navbar>
+    
+      </Navbar>
+      <Container>
+        <LeftContainer>Left</LeftContainer>
+        <MiddleContainer>Middle</MiddleContainer>
+        <RightContainer>Right</RightContainer>
+      </Container>
+    </>
   )
 }
 
