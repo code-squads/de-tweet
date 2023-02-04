@@ -1,4 +1,5 @@
 import React from 'react'
+import Right from '../components/home/right'
 import Navbar from '../components/navbar/navbar'
 import { Container, LeftContainer, MiddleContainer, RightContainer } from './styledComponents/home.styled'
 
@@ -11,7 +12,9 @@ const Home = () => {
       <Container>
         <LeftContainer>Left</LeftContainer>
         <MiddleContainer>Middle</MiddleContainer>
-        <RightContainer>Right</RightContainer>
+        <RightContainer>
+          <Right></Right>
+        </RightContainer>
       </Container>
     </>
   )
