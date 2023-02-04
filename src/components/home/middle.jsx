@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { toast } from "react-toastify";
 import { 
     CreatePostContainer, 
     Textarea, 
@@ -33,6 +34,7 @@ import heartIcon from '../../assets/heart.png'
 
 const Middle = () => {
 
+    const [tweetText, setTweetText] = useState("")
     const inputFile = useRef(null) 
     const [photo, setPhoto] = useState(null)
     const[feed, setFeed] = useState("all")
@@ -55,12 +57,60 @@ const Middle = () => {
         setPhoto(null)
     }
 
+    const checkHateSpeech = async () => {
+        // const token = await fetch('https://developer.expert.ai/oauth2/token', {
+        //     method: 'POST',
+        //     headers: {
+        //     'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({
+        //     username: 'secretcoders1@gmail.com',
+        //     password: 'Secretcoders@01'
+        //     })
+        // });
+        // console.log(token.json);
+
+        const token = process.env.REACT_APP_HATE_SPEECH_TOKEN;
+        const result = await fetch('https://nlapi.expert.ai/v2/detect/hate-speech/en', {
+            method: 'POST',
+            headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "document": {
+                    "text": tweetText
+                }
+            })
+        });
+        const resp = await result.json();
+        return resp.data.categories.length > 0;
+    };
+
+    const onUploadPost = async () => {
+        const isHateSpeech = await checkHateSpeech();
+        if (isHateSpeech) {
+            toast.error('Hateful content found in tweet', {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        } else {
+            // post the call to api
+        }
+    };
+
     return (
         <>
         <CreatePostContainer open={photo}>
             <ProfilePhoto/>
             <Column2>
-                <Textarea placeholder="What’s happening?"/>
+                <Textarea placeholder="What’s happening?" value={tweetText} onChange={e => setTweetText(e.target.value)}/>
                 {photo && 
                 <ImageContainer>
                     <ImageRow src={URL.createObjectURL(photo)}>
@@ -69,7 +119,7 @@ const Middle = () => {
                 </ImageContainer>}
                 <Row>
                     <AddImageIcon src={addImages}  onClick={onButtonClick}/>
-                    <PostButton>
+                    <PostButton onClick={onUploadPost}>
                         <PostIcon src={link}/>
                         Post
                     </PostButton>
