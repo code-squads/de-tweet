@@ -128,7 +128,6 @@ export const PostsFlexbox = styled.div`
 
 export const PostContainer = styled.div`
     width: 100%;
-    /* min-height: 200px; */
     display: flex;
     flex-direction: column;
     background: #FFFFFF;
