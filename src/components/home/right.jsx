@@ -1,9 +1,10 @@
 import React from "react";
 
-import { NotificationContainer, NotificationLabel, Notification, NotifUserImage, NotifContent, NotifUserName, NotifMessage } from './right.styled';
+import { NotificationContainer, NotificationLabel, Notification, NotifUserImage, NotifContent, NotifUserName, NotifMessage, UserListLabel, TotalUserCount, TotalUsersInfoContainer } from './right.styled';
 
 const Notifications = [
     {
+        id: 1,
         user: {
             avator: null,
             name: "John Doe"
@@ -11,6 +12,7 @@ const Notifications = [
         message: "Hi, how are you?"
     },
     {
+        id: 2,
         user: {
             avator: null,
             name: "John Doe"
@@ -18,6 +20,7 @@ const Notifications = [
         message: "Hi, how are you?"
     },
     {
+        id: 3,
         user: {
             avator: null,
             name: "John Doe"
@@ -25,6 +28,7 @@ const Notifications = [
         message: "Hi, how are you?"
     },
     {
+        id: 4,
         user: {
             avator: null,
             name: "John Doe"
@@ -32,6 +36,7 @@ const Notifications = [
         message: "Hi, how are you?"
     },
     {
+        id: 5,
         user: {
             avator: null,
             name: "John Doe"
@@ -47,7 +52,7 @@ const Right = () => {
             <NotificationContainer>
                 {Notifications.map((notification) => {
                     return (
-                        <Notification>
+                        <Notification key={notification.id}>
                             <NotifUserImage></NotifUserImage>
                             <NotifContent>
                                 <NotifUserName>{notification.user.name} </NotifUserName>
@@ -57,6 +62,13 @@ const Right = () => {
                     )
                 })}
             </NotificationContainer>
+
+            <TotalUsersInfoContainer>
+            <UserListLabel>All Users</UserListLabel>
+            <TotalUserCount>100</TotalUserCount>
+            </TotalUsersInfoContainer>
+
+            
         </>
     )
 }
