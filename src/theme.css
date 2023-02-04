@@ -1,0 +1,11 @@
+
+/* To get these values, run the app with themeprovider and copy vars by inspecting body tag */
+:root {
+  --borderRadius: 4px;
+  --palette-common-brandColor: blue;
+  --palette-common-brandSecondaryColor: orange;
+  --palette-primary-background: #333;
+  --palette-primary-textColor: #fff;
+  --palette-secondary-background: #444;
+  --palette-secondary-textColor: #fff;
+}
