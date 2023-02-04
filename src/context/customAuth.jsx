@@ -1,6 +1,8 @@
 import React, { createContext, useState, useEffect } from "react";
+import { useMetamask } from 'use-metamask'
+import { toast } from "react-toastify";
 
-import { AUTH_TOKEN_KEY } from "../constant/auth";
+// import { AUTH_TOKEN_KEY } from "../constant/auth";
 
 // Store core auth info like username, id, avatar, etc
 // interface IEntityInfo {
@@ -26,6 +28,7 @@ import { AUTH_TOKEN_KEY } from "../constant/auth";
 // Actual context for authorisation
 const AuthContext = createContext({
   loggedIn: false,
+  metamaskNotFound: false,
   isProcessingLogin: false,
   entityInfo: null,
   data: null,
@@ -33,12 +36,29 @@ const AuthContext = createContext({
   logout: () => {},
 });
 
+//Created check function to see if the MetaMask extension is installed
+const isMetaMaskInstalled = () => {
+  //Have to check the ethereum binding on the window object to see if it's installed
+  const { ethereum } = window;
+  return Boolean(ethereum && ethereum.isMetaMask);
+};
+
 // Import this in app.tsx or root level component for your theme
 const AuthProvider = (props) => {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [isProcessingLogin, setIsProcessingLogin] = useState(false);
+  const [isProcessingLogin, setIsProcessingLogin] = useState(true);
+  const [metamaskNotFound, setMetamaskNotFound] = useState(true);
+  
   const [entityInfo, setEntityInfo] = useState(null);
   const [data, setData] = useState(null);
+  const { metaState, connect, getAccounts, getChain } = useMetamask();
+
+  //Created check function to see if the MetaMask extension is installed
+  const isMetaMaskInstalled = () => {
+    //Have to check the ethereum binding on the window object to see if it's installed
+    const { ethereum } = window;
+    return Boolean(ethereum && ethereum.isMetaMask);
+  };
 
   const login = () => {
     if (loggedIn) {
@@ -46,11 +66,61 @@ const AuthProvider = (props) => {
       return false;
     }
 
-    localStorage.setItem(AUTH_TOKEN_KEY, "loginTokenID")
+    setIsProcessingLogin(true);
 
-    setLoggedIn(true);
-    setEntityInfo({ username: "abc@gmail.com", name: "John Doe" });
-    setData({ bookmarks: ['google.com', 'twitter.com'] });
+    getAccounts()
+      .then(accounts => {
+        console.log("accounts:", accounts);
+        if(accounts.length){
+          setIsProcessingLogin(false);
+          setEntityInfo({ address: accounts[0] });
+          setData({});
+          setLoggedIn(true);
+        } else {
+          window.ethereum
+            .request({ method: 'eth_requestAccounts' })
+            .then(accounts => {
+              console.log("Connected", accounts);
+              if(accounts.length){
+                setIsProcessingLogin(false);
+                setLoggedIn(true);
+                setEntityInfo({ address: accounts[0] });
+                toast.success('Successfuly logged in !!', {
+                  position: "top-right",
+                  autoClose: 2000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                });
+              } else {
+                throw new Error('Metamask connected, but got no accounts', accounts);
+              }
+            })
+            .catch(err => {
+              toast.error('Request rejected in metamask window !!', {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              });
+              console.log("Request not approved !", err);
+              setIsProcessingLogin(false);
+              setLoggedIn(false);
+            })
+        }
+      })
+      .catch(err => {
+        console.log("Error getting accounts", err);
+        setIsProcessingLogin(false);
+      })
+
     return true;
   };
 
@@ -59,9 +129,6 @@ const AuthProvider = (props) => {
       console.log("Already logged out !");
       return false;
     }
-
-    // Remove token from cookies localstorage etc
-    localStorage.removeItem(AUTH_TOKEN_KEY);
 
     // Update login status in the context
     setLoggedIn(false);
@@ -73,6 +140,7 @@ const AuthProvider = (props) => {
   const contextValue = {
     loggedIn,
     isProcessingLogin,
+    metamaskNotFound,
     entityInfo,
     data,
     login,
@@ -83,20 +151,42 @@ const AuthProvider = (props) => {
     // Pull saved login state from localStorage cookies etc
     setIsProcessingLogin(true);
 
-    const authToken = localStorage.getItem(AUTH_TOKEN_KEY);
-    if(authToken){
-      setTimeout(()=>{
-        login();
-        setIsProcessingLogin(false);
-      }, 200);
-    }
-    else {
-      setTimeout(()=>{
-        setIsProcessingLogin(false);
-      }, 1000);
-    };
+    console.log("Metamask status", metaState);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if(!isMetaMaskInstalled()){
+      toast.error('Please install Metamask !!', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setMetamaskNotFound(true);
+      setIsProcessingLogin(false);
+    }
+
+    getAccounts()
+      .then(accounts => {
+        console.log("accounts:", accounts);
+        if(accounts.length){
+          setIsProcessingLogin(false);
+          setEntityInfo({ address: accounts[0] });
+          setData({});
+          setLoggedIn(true);
+        } else {
+          setIsProcessingLogin(false);
+          setLoggedIn(false);
+        }
+      })
+      .catch(err => {
+        console.log("Error getting accounts", err);
+        setIsProcessingLogin(false);
+        setLoggedIn(false);
+      })
+
   }, []);
 
   return <AuthContext.Provider value={contextValue} {...props} />;

@@ -1,19 +1,24 @@
 import React, { useEffect } from "react";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "../context/customAuth";
 
 const ProtectedRoute = (props) => {
   const { loggedIn, entityInfo, isProcessingLogin } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("Check,",isProcessingLogin,loggedIn, entityInfo);
+    console.log("Check", isProcessingLogin,loggedIn, entityInfo);
 
     if(!isProcessingLogin){
-      if(!loggedIn || !entityInfo) 
-        Navigate({to: "/"});
+      if(!loggedIn || !entityInfo){
+        console.log("Navigate to Home !!");
+        navigate("/");
+      }
     }
   }, [loggedIn, entityInfo, isProcessingLogin]);
+
+  useEffect(() => console.log("hello"), []);
 
   return (
     <div>
