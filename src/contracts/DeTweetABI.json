@@ -39,6 +39,19 @@
 		"type": "function"
 	},
 	{
+		"inputs": [],
+		"name": "admin",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "uint256",
@@ -68,215 +81,6 @@
 		"name": "follow",
 		"outputs": [],
 		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "postWriter",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "post_idx",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "post_ref",
-				"type": "string"
-			}
-		],
-		"name": "like",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "fname",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "lname",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "bio",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "avatar",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "city",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "country",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "birthdate",
-				"type": "uint256"
-			},
-			{
-				"internalType": "enum Data.Gender",
-				"name": "gender",
-				"type": "uint8"
-			}
-		],
-		"name": "modifyUserData",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "user",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "postID",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "reportMsg",
-				"type": "string"
-			}
-		],
-		"name": "reportPost",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "user",
-				"type": "address"
-			}
-		],
-		"name": "unFollow",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "postWriter",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "post_idx",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "post_ref",
-				"type": "string"
-			}
-		],
-		"name": "unlike",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "fname",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "lname",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "bio",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "avatar",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "city",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "country",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "birthdate",
-				"type": "uint256"
-			},
-			{
-				"internalType": "enum Data.Gender",
-				"name": "gender",
-				"type": "uint8"
-			}
-		],
-		"name": "userRegistration",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "admin",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -570,6 +374,11 @@
 						"internalType": "enum Data.Gender",
 						"name": "gender",
 						"type": "uint8"
+					},
+					{
+						"internalType": "uint256",
+						"name": "likedPostsCount",
+						"type": "uint256"
 					}
 				],
 				"internalType": "struct Data.UserData",
@@ -651,6 +460,25 @@
 	{
 		"inputs": [
 			{
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			}
+		],
+		"name": "getUserPostsCount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "string",
 				"name": "post_ref",
 				"type": "string"
@@ -712,6 +540,83 @@
 	{
 		"inputs": [
 			{
+				"internalType": "address",
+				"name": "postWriter",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "post_idx",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "post_ref",
+				"type": "string"
+			}
+		],
+		"name": "like",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "fname",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "lname",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "bio",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "avatar",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "city",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "country",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "birthdate",
+				"type": "uint256"
+			},
+			{
+				"internalType": "enum Data.Gender",
+				"name": "gender",
+				"type": "uint8"
+			}
+		],
+		"name": "modifyUserData",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "string",
 				"name": "",
 				"type": "string"
@@ -731,6 +636,125 @@
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "postID",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "reportMsg",
+				"type": "string"
+			}
+		],
+		"name": "reportPost",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			}
+		],
+		"name": "unFollow",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "postWriter",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "post_idx",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "post_ref",
+				"type": "string"
+			}
+		],
+		"name": "unlike",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "fname",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "lname",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "bio",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "avatar",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "city",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "country",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "birthdate",
+				"type": "uint256"
+			},
+			{
+				"internalType": "enum Data.Gender",
+				"name": "gender",
+				"type": "uint8"
+			}
+		],
+		"name": "userRegistration",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	}
 ]
