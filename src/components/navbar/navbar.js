@@ -9,7 +9,7 @@ const NavbarContainer = styled.div`
     padding-left: 60px;
     display: flex;
     flex-direction: row;
-    background-color: blue;
+    background-color: white;
     box-sizing: border-box;
 `
 
