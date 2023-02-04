@@ -101,6 +101,24 @@ const Middle = () => {
                     <LikeCount>20 Likes</LikeCount>
                 </LikeFlex>
             </PostContainer>
+
+            <PostContainer>
+                <Row1>
+                    <ProfilePhoto2></ProfilePhoto2>
+                    <Row1Column2>
+                        <Name>Rupesh Raut</Name>
+                        <ShortDesc>18 Hours ago</ShortDesc>
+                    </Row1Column2>
+                </Row1>
+                <Text>
+                    Hello Everyone, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut laborea aliqua. ation ullamco laboris
+                </Text>
+                <Line/>
+                <LikeFlex>
+                    <Heart src={heartIcon}/>
+                    <LikeCount>20 Likes</LikeCount>
+                </LikeFlex>
+            </PostContainer>
             {/* <PostContainer></PostContainer>
             <PostContainer></PostContainer> */}
         </PostsFlexbox>
