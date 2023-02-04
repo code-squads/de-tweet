@@ -96,6 +96,9 @@ contract Main is AdminAuthorized {
     function getUserPosts(address user) public view returns (Data.Post[] memory) {
         return userPosts[user];
     }
+    function getUserPostsCount(address user) public view returns (uint256) {
+        return userPosts[user].length;
+    }
 
     // Function to add post for the hospitals
     function addPost(
