@@ -64,11 +64,11 @@ const Middle = () => {
         //     'Content-Type': 'application/json'
         //     },
         //     body: JSON.stringify({
-        //     username: 'secretcoders1@gmail.com',
-        //     password: 'Secretcoders@01'
+        //         username: 'secretcoders1@gmail.com',
+        //         password: 'Secretcoders@01'
         //     })
         // });
-        // console.log(token.json);
+        // // console.log(token.json);
 
         const token = process.env.REACT_APP_HATE_SPEECH_TOKEN;
         const result = await fetch('https://nlapi.expert.ai/v2/detect/hate-speech/en', {
