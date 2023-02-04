@@ -1,11 +1,10 @@
 import React from 'react'
+import Test from '../components/Test/Test'
 
 const Tester = () => {
   return (
     <div>
-      <h1>
-        Loggedin home
-      </h1>
+      <Test />
     </div>
   )
 }
