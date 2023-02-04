@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom'
 import sallySvg1 from "../assets/SalySvg1.svg";
 import sallySvg2 from "../assets/SalySvg2.svg";
 import linkSvg from "../assets/LinkSvg.svg";
-import "./Signup.css";
 import Navbar from "../components/navbar/navbar";
+import { useAuth } from "../context/customAuth";
+import { getUserInfo, userRegistration } from '../apis/users'
+
+import "./Signup.css";
 
 const Signup = () => {
   const [fname, setFname] = useState("");
@@ -12,7 +16,40 @@ const Signup = () => {
   const [account, setAccount] = useState("");
   const [gender, setGender] = useState("");
 
-  
+  const navigate = useNavigate();
+  const { entityInfo, login } = useAuth();
+  const onConnect = () => {
+    login();
+  }
+
+
+  useEffect(() => {
+    if(!entityInfo)
+      return;
+
+    getUserInfo(entityInfo.address)
+      .then(profile => {
+        console.log(profile);
+        // Signup possible
+        if(profile.birthdate != "0"){
+          navigate('/profile');
+        }
+      })
+    
+  }, [entityInfo]);
+
+
+  // const [valueObj, setValueObj] = useState({
+  //   fname: '',
+  //   lname: '',
+  //   account: '',
+  //   gender: '',
+  //   description: ''
+  // });
+
+  // const handleChange = (event) => {
+  //   setValueObj({ ...valueObj, [event.target.fname]: event.target.value});
+  // };
 
   const handleAccountChange = (event) => {
     setAccount(event.target.value);
@@ -32,6 +69,7 @@ const Signup = () => {
   };
 
   const handleCreate = () => {
+    const bdate = new Date('10-05-1994');
     const userObject = {
       fName: fname,
       lName: lname,
@@ -39,11 +77,18 @@ const Signup = () => {
       avatar: 'boy',
       city: 'Mum',
       country: 'India',
-      metaAccount: account,
+      birthdate: Number(new Date('10-05-1994')/1000),
       gender: gender,
     }
+
     console.log(userObject);
+    userRegistration(account, userObject);
+    
+    setTimeout(() => {
+      console.log("Redirect to profile !");
+    }, 10000);
   };
+
 
   return (
     <div className="signup">
@@ -105,13 +150,11 @@ const Signup = () => {
                 onChange={handleAccountChange}
               >
                 <option value="" disabled selected hidden></option>
-                <option value="male">Dummy1</option>
-                <option value="female">Dummy2</option>
-                <option value="Other">Dummy3</option>
+                { entityInfo && <option value={entityInfo.address}>{ entityInfo.address }</option> }
               </select>
             </div>
             <div className=" label">
-              <button type="submit" className="connect-btn ">
+              <button type="submit" className="connect-btn " onClick={onConnect}>
                 <img src={linkSvg} className="link-svg" alt="" />
                 Connect
               </button>

@@ -92,6 +92,10 @@ const Web3Tester = () => {
           <>
             Address: { entityInfo.address }
             &nbsp;&nbsp;&nbsp;&nbsp;
+            <button onClick={() => user(entityInfo.address)}>
+              User -- {entityInfo.address}
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;
             <button onClick={logout}>
               Logout
             </button>

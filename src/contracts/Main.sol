@@ -27,7 +27,6 @@ contract Main is AdminAuthorized {
     
 
 
-
     
     // Function for User registration, only permitted to admin
     function userRegistration(
