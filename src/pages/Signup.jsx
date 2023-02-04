@@ -12,17 +12,7 @@ const Signup = () => {
   const [account, setAccount] = useState("");
   const [gender, setGender] = useState("");
 
-  // const [valueObj, setValueObj] = useState({
-  //   fname: '',
-  //   lname: '',
-  //   account: '',
-  //   gender: '',
-  //   description: ''
-  // });
-
-  // const handleChange = (event) => {
-  //   setValueObj({ ...valueObj, [event.target.fname]: event.target.value});
-  // };
+  
 
   const handleAccountChange = (event) => {
     setAccount(event.target.value);
