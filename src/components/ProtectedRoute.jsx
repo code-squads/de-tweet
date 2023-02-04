@@ -21,10 +21,10 @@ const ProtectedRoute = (props) => {
   useEffect(() => console.log("hello"), []);
 
   return (
-    <div>
-      Protected Route !!
+    <>
+      {/* Protected Route !! */}
       { props.children }
-    </div>
+    </>
   )
 }
 

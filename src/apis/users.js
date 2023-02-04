@@ -1,46 +1,50 @@
 import DeTweetContract, { web3, linkFromTxHash } from "./DeTweetContract";
 
 export const userRegistration = (address, userInfo) => new Promise(async (resolve, reject) => {
-  if(!address)
-    return reject("Invalid address");
+  if(!address || !userInfo)
+    return reject("Invalid inputs");
 
-    const tx = DeTweetContract.methods.userRegistration(
-      userInfo.lname,
-      userInfo.fname,
-      userInfo.bio,
-      userInfo.avatar,
-      userInfo.city,
-      userInfo.country,
-      userInfo.birthdate,
-      userInfo.gender,
-    );
-    console.log("New record transaction: ", tx);
-  
-    const gasPrice = await web3.eth.getGasPrice();
-    const gas = (await tx.estimateGas({ from: address })) + 20000;
-    console.log(gas, gasPrice);
-    
-
-    try {
-      const receipt = await tx.send({
-        from: address,
-        gas,
-        gasPrice,
-      });
-      console.log(receipt);
-      console.log(`Transaction hash: ${receipt.transactionHash}`);
+  console.log(
+    userInfo.fName,
+    userInfo.lName,
+    userInfo.bio,
+    userInfo.avatar,
+    userInfo.city,
+    userInfo.country,
+    userInfo.birthdate,
+    userInfo.gender,
+  )
+  const tx = DeTweetContract.methods.userRegistration(
+    userInfo.fName,
+    userInfo.lName,
+    userInfo.bio,
+    userInfo.avatar,
+    userInfo.city,
+    userInfo.country,
+    userInfo.birthdate,
+    userInfo.gender,
+  );
+  console.log("New record transaction: ", tx);
+  tx
+    .send({
+      from: address
+    })
+    .then(receipt => {
+      console.log("Tx Receipt", receipt);
+      console.log(`Transaction hash: ${receipt?.transactionHash}`);
       console.log(
         `View the transaction here: `,
-        linkFromTxHash(receipt.transactionHash)
+        linkFromTxHash(receipt?.transactionHash)
       );
       return receipt;
-    } catch (err) {
-      console.log(
-        "Some error sending record approval transaction from account:",
-        address
-      );
-      console.log(err);
-    }
+    })
+    .catch(err => {
+      console.log("Tx err", err);
+    });
+  
+  // const gasPrice = await web3.eth.getGasPrice();
+  // const gas = (await tx.estimateGas({ from: address })) + 20000;
+  // console.log(gas, gasPrice);
 })
 
 export const getUserInfo = address => new Promise((resolve, reject) => {
@@ -134,6 +138,23 @@ export const getFollowers = address => new Promise((resolve, reject) => {
       reject(new Error(`Couldn't fetch info for address ${address}`));
     });
 });
+
+export const getUserPosts = address => new Promise((resolve, reject) => {
+  if(!address)
+    return reject("Invalid address");
+
+  // Otherwise fetch details from blockchain
+  DeTweetContract.methods
+    .getUserPosts(address)
+    .call()
+    .then(posts => {
+      resolve(posts);
+    }).catch(err => {
+      console.log(`Some error fetching posts for address ${address} \n`, err);
+      reject(new Error(`Couldn't fetch post for address ${address}`));
+    });
+});
+
 
 // export const getInfo = address => new Promise((resolve, reject) => {
 //   if(!address)
