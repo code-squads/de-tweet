@@ -67,6 +67,7 @@ export const Address = styled.div`
 
 export const CopyIcon = styled.img`
     width: 11px;
+    cursor: pointer;
 `
 
 export const Row3 = styled.div`

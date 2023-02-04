@@ -27,7 +27,6 @@ contract Main is AdminAuthorized {
     
 
 
-
     
     // Function for User registration, only permitted to admin
     function userRegistration(
@@ -95,6 +94,9 @@ contract Main is AdminAuthorized {
     // eg. getUserPosts(0x999...04, "0x999...04_")
     function getUserPosts(address user) public view returns (Data.Post[] memory) {
         return userPosts[user];
+    }
+    function getUserPostsCount(address user) public view returns (uint256) {
+        return userPosts[user].length;
     }
 
     // Function to add post for the hospitals

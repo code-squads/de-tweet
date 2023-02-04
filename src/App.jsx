@@ -19,6 +19,7 @@ import Web3Tester from './pages/Web3Tester';
 import 'react-toastify/dist/ReactToastify.css';
 import './theme.css';
 import './App.css';
+import LandingPage2 from './pages/LandingPage';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <AuthProvider>
             <Routes>
               <Route path="/" element={<LandingPage />} />
+              {/* <Route path="/landingPage" element={<LandingPage2 />} /> */}
               <Route path="/signup" element={<Signup />} />
               <Route path="/tester" element={<Test />} />
               <Route path="/web3test" element={<Web3Tester />} />

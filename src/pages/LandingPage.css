@@ -1,0 +1,45 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Lexend:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+.landing-container{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.primary-landing-text{
+    margin-top: 3%;
+    font-family: 'Lexend', sans-serif;
+    font-weight: 500;
+    font-size: 32px;
+    color: #606060;
+}
+.secondary-landing-text{
+    width: 40%;
+    margin-top: 2.5%;
+    font-family: 'Lexend', sans-serif;
+
+    font-weight: 400;
+    color: #7E7E7E;
+    font-size: 24px;
+}
+.getting-started-btn{
+    color: #ffffff;
+    background-color: #1977F2;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: 5px;
+    padding: 11px 45px;
+    margin-top: 2.5%;
+    cursor: pointer;
+}
+.getting-started-btn:hover {
+    filter: drop-shadow(0 0 10px rgba(25, 119, 242, 0.3));
+}
+.landing-svg{
+    position: absolute;
+    overflow: hidden;
+    z-index: -1;
+}
