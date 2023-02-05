@@ -19,7 +19,7 @@ export const Row1 = styled.div`
     column-gap: 12px;
 `
 
-export const ProfilePhoto = styled.div`
+export const ProfilePhoto = styled.img`
     width: 60px;
     height: 60px;
     background: #D9D9D9;

@@ -33,6 +33,8 @@ import Copy from '../../assets/copyIcon.png'
 import { useAuth } from "../../context/customAuth";
 import { getFollowersCount, getFollowingCount, getUserInfo, getUserPosts } from "../../apis/users";
 import { toast } from "react-toastify";
+import { Navigate, useNavigate } from "react-router-dom";
+import { Avatars, getSrc } from "../../constant/avatarResolver";
 
 
 const Left = () => {
@@ -40,6 +42,8 @@ const Left = () => {
 
     const [fetching, setFetching] = useState(true);
     const [userInfo, setUserInfo] = useState(null);
+
+    const navigate = useNavigate()
     const [userMetaData, setUserMetaData] = useState({
         followers: 50,
         following: 50,
@@ -54,6 +58,9 @@ const Left = () => {
         console.log("Fetching info for", userAddress);
         getUserInfo(userAddress)
             .then(user => {
+                if(user.birthdate == '0') {
+                    navigate('/signup')
+                }
                 console.log(user);
                 setUserInfo(user);
                 setUserMetaData(prev => ({ ...prev, postsLiked: user.likedPostsCount }));
@@ -74,12 +81,13 @@ const Left = () => {
         navigator.clipboard.writeText(text);
         toast.success('Copied to clipboard !');
     }
+
     
     return (
         <>
             <MyProfileContainer>
                 <Row1>
-                    <ProfilePhoto></ProfilePhoto>
+                    <ProfilePhoto src={getSrc(userInfo?.gender, userInfo?.avatar)}></ProfilePhoto>
                     <Row1Column2>
                         <Name>
                             {

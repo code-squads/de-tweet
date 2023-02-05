@@ -73,6 +73,7 @@ const Signup = () => {
   };
 
   const handleCreate = () => {
+    const bdate = new Date('10-05-1994');
     const userObject = {
       fName: fname,
       lName: lname,
