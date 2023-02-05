@@ -33,10 +33,7 @@ import Copy from '../../assets/copyIcon.png'
 import { useAuth } from "../../context/customAuth";
 import { getFollowersCount, getFollowingCount, getUserInfo, getUserPosts } from "../../apis/users";
 import { toast } from "react-toastify";
-<<<<<<< HEAD
 import { Navigate, useNavigate } from "react-router-dom";
-=======
->>>>>>> master
 
 
 const Left = () => {
