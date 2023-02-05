@@ -33,7 +33,7 @@ import crossIcon from '../../assets/crossIcon.svg'
 import heartIcon from '../../assets/heart.png'
 import likedIcon from '../../assets/likedIcon (1).png'
 import { getSrc } from "../../constant/avatarResolver";
-import { addPost } from "../../apis/posts";
+import { addPost, hasLike, like } from "../../apis/posts";
 import { useAuth } from "../../context/customAuth";
 import { getAllUsers, getFollowing, getUserPosts } from "../../apis/users";
 import moment from "moment";
@@ -60,6 +60,9 @@ const Middle = (props) => {
     const [allPosts, setAllPosts] = useState([]);
     const [followingPosts, setFollowingPosts] = useState([]);
     const [tempLikedPosts, setTempLikedPosts] = useState([])
+
+    const [postIndices, setPostIndices] = useState(new Map());
+    const [myLiked, setMyLiked] = useState([]);
 
 	const changeHandler = (event) => {
         setPhoto(event.target.files[0])
@@ -171,16 +174,27 @@ const Middle = (props) => {
         let allPosts = [];
         let followingSet = new Set();
 
+        const newPostMap = new Map();
         let userPostPromise;
+        const mylikednew  = [];
         const userPromise = getAllUsers()
           .then(users => {
             //   set(users);
               console.log("All users:", users);
-
               userPostPromise = awaitAll(users, async user => {
-                return await getUserPosts(user.myAddress).then(posts => allPosts.push(...posts));
+                return await getUserPosts(user.myAddress).then(posts => {
+                    posts.map((post, idx) =>{
+                        newPostMap.set(post, idx);
+                        let post_idx = postIndices.get(post);
+                        hasLike(post.postWriter+"_"+post_idx, entityInfo.address)
+                            .then(res => console.log(res))
+                    });
+                    allPosts.push(...posts);
+                    setPostIndices(newPostMap);
+                });
               })
                 .then(() => {
+                    setMyLiked(mylikednew);
                     allPosts.sort((x, y) => Number(y.postDate)-Number(x.postDate))
                     console.log("Track: All posts ready", allPosts);
                     setAllPosts(allPosts);
@@ -207,9 +221,14 @@ const Middle = (props) => {
 
 
     const onLikeClickHandler = (post) => {
-        setTempLikedPosts((prevPosts) => [...prevPosts, post])
+        console.log("Like post", post);
+        let post_idx = postIndices.get(post);
+        like(post.postWriter, post_idx, post.postWriter+"_"+post_idx, entityInfo.address)
+            .then(() => {
+                toast.success("Liked post !");
+            })
+        setTempLikedPosts((prevPosts) => [...prevPosts, post]);
     }
-
 
     return (
         <>
@@ -258,7 +277,7 @@ const Middle = (props) => {
                             </Text>
                             <Line/>
                             <LikeFlex>
-                                <Heart src={tempLikedPosts.includes(post) || post.hasLiked ? likedIcon : heartIcon} onClick={() => onLikeClickHandler(post)}/>
+                                <Heart src={tempLikedPosts.includes(post) || myLiked.includes() ? likedIcon : heartIcon} onClick={() => onLikeClickHandler(post)}/>
                                 <LikeCount>{post.likes} Likes</LikeCount>
                             </LikeFlex>
                         </PostContainer>
