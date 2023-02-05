@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { 
     CreatePostContainer, 
@@ -31,13 +31,17 @@ import addImages from '../../assets/addImages.svg'
 import link from '../../assets/Group 2.svg'
 import crossIcon from '../../assets/crossIcon.svg'
 import heartIcon from '../../assets/heart.png'
+import { getSrc } from "../../constant/avatarResolver";
+import { addPost } from "../../apis/posts";
+import { useAuth } from "../../context/customAuth";
 
-const Middle = () => {
-
+const Middle = (props) => {
+    const { entityInfo } = useAuth()
     const [tweetText, setTweetText] = useState("")
     const inputFile = useRef(null) 
     const [photo, setPhoto] = useState(null)
     const[feed, setFeed] = useState("all")
+    const [userInfo, setUserInfo] = useState(props.userInfo);
 
 	const changeHandler = (event) => {
         setPhoto(event.target.files[0])
@@ -88,29 +92,60 @@ const Middle = () => {
     };
 
     const onUploadPost = async () => {
-        const isHateSpeech = await checkHateSpeech();
-        if (isHateSpeech) {
-            toast.error('Hateful content found in tweet', {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-        } else {
+        // const isHateSpeech = await checkHateSpeech();
+        // if (isHateSpeech) {
+        //     toast.error('Hateful content found in tweet', {
+        //         position: "top-right",
+        //         autoClose: 2000,
+        //         hideProgressBar: false,
+        //         closeOnClick: true,
+        //         pauseOnHover: true,
+        //         draggable: true,
+        //         progress: undefined,
+        //         theme: "light",
+        //     });
+        // }
+        //  else {
+            const post = {
+                text: tweetText,
+                postDate: Number(new Date()/1000).toFixed(),
+                reportMsg: [],
+                cids: [],
+                titles: []
+            }
+
+            addPost(entityInfo.address, post)
+            .then(receipt => {
+                toast.success('Tweeted Successfully!');
+            })
+            .catch(error => {
+                toast.error('Some Error Occured', {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            })
+
+            
             // post the call to api
         }
-    };
+    // };
+
+    useEffect(() => {
+        setUserInfo(props.userInfo)
+    }, [props.userInfo])
 
     return (
         <>
         <CreatePostContainer open={photo}>
-            <ProfilePhoto/>
+            <ProfilePhoto src={getSrc(userInfo?.gender, userInfo?.avatar)}/>
             <Column2>
-                <Textarea placeholder="What’s happening?" value={tweetText} onChange={e => setTweetText(e.target.value)}/>
+                <Textarea placeholder="What’s happening?" value={tweetText} onChange={e => setTweetText(e.target.value)} maxLength={200}/>
                 {photo && 
                 <ImageContainer>
                     <ImageRow src={URL.createObjectURL(photo)}>
