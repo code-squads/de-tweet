@@ -34,6 +34,7 @@ import { useAuth } from "../../context/customAuth";
 import { getFollowersCount, getFollowingCount, getUserInfo, getUserPosts } from "../../apis/users";
 import { toast } from "react-toastify";
 import { Navigate, useNavigate } from "react-router-dom";
+import { Avatars, getSrc } from "../../constant/avatarResolver";
 
 
 const Left = () => {
@@ -80,12 +81,13 @@ const Left = () => {
         navigator.clipboard.writeText(text);
         toast.success('Copied to clipboard !');
     }
+
     
     return (
         <>
             <MyProfileContainer>
                 <Row1>
-                    <ProfilePhoto></ProfilePhoto>
+                    <ProfilePhoto src={getSrc(userInfo?.gender, userInfo?.avatar)}></ProfilePhoto>
                     <Row1Column2>
                         <Name>
                             {

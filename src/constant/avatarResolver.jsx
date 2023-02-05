@@ -27,6 +27,14 @@ export const Avatars = {
   }
 }
 
+export const getSrc = (gender, avatarId) =>  {
+  if(!gender || !avatarId) 
+    return Avatars.male[m1]
+  if(Number(gender) === 0)
+    return Avatars.male[avatarId] || Avatars.male[m1]
+  return Avatars.female[avatarId] || Avatars.female[f1]
+}
+
 function randomRange(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
