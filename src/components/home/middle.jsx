@@ -110,20 +110,20 @@ const Middle = (props) => {
     };
 
     const onUploadPost = async () => {
-        // const isHateSpeech = await checkHateSpeech();
-        // if (isHateSpeech) {
-        //     toast.error('Hateful content found in tweet', {
-        //         position: "top-right",
-        //         autoClose: 2000,
-        //         hideProgressBar: false,
-        //         closeOnClick: true,
-        //         pauseOnHover: true,
-        //         draggable: true,
-        //         progress: undefined,
-        //         theme: "light",
-        //     });
-        // }
-        //  else {
+        const isHateSpeech = await checkHateSpeech();
+        if (isHateSpeech) {
+            toast.error('Hateful content found in tweet', {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
+         else {
             const post = {
                 text: tweetText,
                 postDate: Number(new Date()/1000).toFixed(),
@@ -156,7 +156,7 @@ const Middle = (props) => {
             
             // post the call to api
         }
-    // };
+    };
 
 
     useEffect(() => {
