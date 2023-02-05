@@ -20,10 +20,10 @@ const Home = () => {
   const navigate = useNavigate()
 
   const [userMetaData, setUserMetaData] = useState({
-    followers: 50,
-    following: 50,
-    postsLiked: 50,
-    posts: 50,
+    followers: 0,
+    following: 0,
+    postsLiked: 0,
+    posts: 0,
 })
 
   useEffect(() => {

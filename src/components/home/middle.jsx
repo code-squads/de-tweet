@@ -218,7 +218,7 @@ const Middle = (props) => {
                     const user = allUserMap.get(post.postWriter)
                     const m1 = new moment(post.postDate*1000)
                     return (
-                        <PostContainer>
+                        <PostContainer key={post.text}>
                             <Row1>
                                 <ProfilePhoto2 src={getSrc(user.gender, user.avatar)}/>
                                 <Row1Column2>

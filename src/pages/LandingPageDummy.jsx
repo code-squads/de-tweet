@@ -20,7 +20,7 @@ const LandingPageDummy = () => {
         if(profile.birthdate == "0"){
           navigate('/signup');
         } else {
-          navigate('/profile');
+          navigate('/home');
         }
       });
 

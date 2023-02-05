@@ -38,24 +38,15 @@ export const userRegistration = (address, userInfo) => new Promise(async (resolv
 })
 
 
-export const follow = (address, userInfo) => new Promise(async (resolve, reject) => {
-  if(!address || !userInfo)
-    return reject("Invalid inputs");
+export const follow = (self, target) => new Promise(async (resolve, reject) => {
+  if(!self || !target)
+    return reject("Invalid address");
 
-  const tx = DeTweetContract.methods.userRegistration(
-    userInfo.fName,
-    userInfo.lName,
-    userInfo.bio,
-    userInfo.avatar,
-    userInfo.city,
-    userInfo.country,
-    userInfo.birthdate,
-    userInfo.gender,
-  );
-  console.log("New record transaction: ", tx);
+  const tx = DeTweetContract.methods.follow(target);
+  console.log("Follow transaction: ", tx);
   tx
     .send({
-      from: address
+      from: self
     })
     .then(receipt => {
       console.log("Tx Receipt", receipt);
@@ -69,11 +60,47 @@ export const follow = (address, userInfo) => new Promise(async (resolve, reject)
     .catch(err => {
       console.log("Tx err", err);
     });
-  
-  // const gasPrice = await web3.eth.getGasPrice();
-  // const gas = (await tx.estimateGas({ from: address })) + 20000;
-  // console.log(gas, gasPrice);
-})
+});
+
+export const unFollow = (self, target) => new Promise(async (resolve, reject) => {
+  if(!self || !target)
+    return reject("Invalid address");
+
+  const tx = DeTweetContract.methods.unFollow(target);
+  console.log("UnFollow transaction: ", tx);
+  tx
+    .send({
+      from: self
+    })
+    .then(receipt => {
+      console.log("Tx Receipt", receipt);
+      console.log(`Transaction hash: ${receipt?.transactionHash}`);
+      console.log(
+        `View the transaction here: `,
+        linkFromTxHash(receipt?.transactionHash)
+      );
+      return resolve(receipt);
+    })
+    .catch(err => {
+      console.log("Tx err", err);
+    });
+});
+
+export const isFollowing = (self, target) => new Promise(async (resolve, reject) => {
+  if(!self || !target)
+    return reject("Invalid address");
+
+  // Otherwise fetch details from blockchain
+  DeTweetContract.methods
+    .isFollowing(self, target)
+    .call()
+    .then(following => {
+      resolve(following);
+    }).catch(err => {
+      console.log(`Some error fetching isFollowing for self(${self} => target(${target})) \n`, err);
+      reject(new Error(`Couldn't fetch info for self(${self} => target(${target}))`));
+    });
+});
 
 export const getUserInfo = address => new Promise((resolve, reject) => {
   if(!address)

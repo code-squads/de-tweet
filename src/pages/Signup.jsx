@@ -36,7 +36,7 @@ const Signup = () => {
         console.log(profile);
         // Signup possible
         if(profile.birthdate != "0"){
-          navigate('/profile');
+          navigate('/home');
         }
       });
     

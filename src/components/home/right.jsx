@@ -2,8 +2,10 @@ import { React, useState, useEffect } from "react";
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 
 import { NotificationContainer, NotificationLabel, Notification, NotifUserImage, NotifContent, NotifUserName, NotifMessage, UserListLabel, TotalUserCount, TotalUsersInfoContainer, UsersListContainer, UserRow, UserImageForList, UserDetails, UserName2, ShortDesc2, FollowButton, User, SearchContainer, SearchIcon, FontAwesomeSearch, SearchInput, UsersContainer, NoUserContainer } from './right.styled';
-import { getAllUsers } from "../../apis/users";
+import { follow, getAllUsers, getFollowing, unFollow } from "../../apis/users";
 import { Avatars, getSrc } from "../../constant/avatarResolver";
+import { useAuth } from "../../context/customAuth";
+import { toast } from "react-toastify";
 
 
 const Notifications = [
@@ -110,16 +112,49 @@ const Right = () => {
 
     const [queryParam, setQueryParam] = useState('');
     const [users, setUsers] = useState([]);
+    const { entityInfo } = useAuth();
+    const [followingSet, setFollowingSet] = useState(new Set());
+    const [refetch, setRefetch] = useState(-1);
 
-    const filteredUsers = users ? users.filter(user => user.fname.toLowerCase().includes(queryParam.toLowerCase())) : [];
+    const filteredUsers = users ? users.filter(user => (user.fname+user.lname+user.bio).toLowerCase().includes(queryParam.toLowerCase())) : [];
 
     useEffect(() => {
-      getAllUsers()
-        .then(users => {
-            setUsers(users);
-            console.log("All users:", users);
-        })
-    }, [])
+        if(!entityInfo)
+            return;
+        
+        getFollowing(entityInfo.address)
+            .then(following => {
+                const newFollowingSet = new Set(following);
+                console.log("My following set", newFollowingSet);
+                setFollowingSet(newFollowingSet);
+            });
+        
+        getAllUsers()
+            .then(users => {
+                setUsers(users.filter(user => user.myAddress.toLowerCase() !== entityInfo?.address.toLowerCase()));
+                console.log("All users:", users);
+            })
+    }, [entityInfo, refetch]);
+
+    useEffect(() => {
+        setUsers(newUsers => newUsers.filter(user => user.myAddress.toLowerCase() !== entityInfo?.address.toLowerCase()));
+    }, [entityInfo]);
+
+
+    function Follow(targetAddress, fname){
+        follow(entityInfo?.address, targetAddress)
+            .then(() => {
+                toast.success("Followed " + fname);
+                setRefetch(Math.random())
+            });
+    }
+    function UnFollow(targetAddress, fname){
+        unFollow(entityInfo?.address, targetAddress)
+            .then(() => {
+                toast.success("Unfollowed " + fname);
+                setRefetch(Math.random())
+            });
+    }
     
 
     return (
@@ -141,7 +176,9 @@ const Right = () => {
 
             <TotalUsersInfoContainer>
                 <UserListLabel>All Users</UserListLabel>
-                <TotalUserCount>100</TotalUserCount>
+                <TotalUserCount>
+                    { users.length }
+                </TotalUserCount>
             </TotalUsersInfoContainer>
 
             <UsersContainer>
@@ -163,7 +200,16 @@ const Right = () => {
                                             <ShortDesc2>{user['bio']}</ShortDesc2>
                                         </UserDetails>
                                     </User>
-                                    <FollowButton onClick={() => console.log('click')}>Follow</FollowButton>
+                                    {
+                                        followingSet.has(user?.myAddress) ?
+                                        <FollowButton onClick={() => UnFollow(user.myAddress, user.fname)}>
+                                            UnFollow
+                                        </FollowButton>
+                                        :
+                                        <FollowButton onClick={() => Follow(user.myAddress, user.lname)}>
+                                            Follow
+                                        </FollowButton>
+                                    }
                                 </UserRow>
                             );
                         })
@@ -178,7 +224,16 @@ const Right = () => {
                                                 <ShortDesc2>{user.shortDesc}</ShortDesc2>
                                             </UserDetails>
                                         </User>
-                                        <FollowButton onClick={() => console.log('click')}>Follow</FollowButton>
+                                        {
+                                            followingSet.has(user?.myAddress) ?
+                                            <FollowButton onClick={() => UnFollow(user.myAddress, user.fname)}>
+                                                UnFollow
+                                            </FollowButton>
+                                            :
+                                            <FollowButton onClick={() => Follow(user.myAddress, user.fname)}>
+                                                Follow
+                                            </FollowButton>
+                                        }
                                     </UserRow>
                                 );
                             })}
