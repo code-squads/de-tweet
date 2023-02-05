@@ -159,7 +159,7 @@ export const ShortDesc2 = styled.div`
     color: #B5B5B5;
 `
 export const FollowButton = styled.button`
-  width: 57px;
+  width: 68px;
   height: 23px;
   background: #1977F2;
   border-radius: 5px;
