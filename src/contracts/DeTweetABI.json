@@ -156,6 +156,66 @@
 		"type": "function"
 	},
 	{
+		"inputs": [],
+		"name": "getAllUsers",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "fname",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "lname",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "bio",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "avatar",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "city",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "country",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "birthdate",
+						"type": "uint256"
+					},
+					{
+						"internalType": "enum Data.Gender",
+						"name": "gender",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint256",
+						"name": "likedPostsCount",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct Data.UserData[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "address",

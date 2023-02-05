@@ -36,7 +36,7 @@ export const userRegistration = (address, userInfo) => new Promise(async (resolv
         `View the transaction here: `,
         linkFromTxHash(receipt?.transactionHash)
       );
-      return receipt;
+      return resolve(receipt);
     })
     .catch(err => {
       console.log("Tx err", err);

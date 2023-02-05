@@ -1,6 +1,6 @@
-export const contractDeploymentTx = "0x7720267a754d6205b8c297858764e2f588c16a71dd808defc5a9f7b1d7762d49";
+export const contractDeploymentTx = "0x12d1836e36cd73b07031de896bdacb8b1dfb2db4e62c0e91316aa10853293d89";
 
 // export const contractDeploymentTxLink = `https://rinkeby.etherscan.io/tx/${contractDeploymentTx}`;
 export const contractDeploymentTxLink = `https://explorer.kardiachain.io/tx/${contractDeploymentTx}`;
 
-export const detweetAddress = "0xA91a527076897A6526ddeDf84214a8d91407E612";
+export const detweetAddress = "0xa8444b6702Fa03052E14a39782e52699EA69B5D6";
