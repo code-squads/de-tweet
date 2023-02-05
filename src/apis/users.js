@@ -156,6 +156,18 @@ export const getUserPosts = address => new Promise((resolve, reject) => {
 });
 
 
+export const getAllUsers = () => new Promise((resolve, reject) => {
+  DeTweetContract.methods
+    .getAllUsers()
+    .call()
+    .then(allUsers => {
+      resolve(allUsers);
+    }).catch(err => {
+      console.log(`Some error fetching all users \n`, err);
+      reject(new Error(`Couldn't fetch info for all users`));
+    });
+});
+
 // export const getInfo = address => new Promise((resolve, reject) => {
 //   if(!address)
 //       return reject("Invalid address");

@@ -127,7 +127,7 @@ export const UserRow = styled.div`
     justify-content: space-between;
 `  
 
-export const UserImageForList = styled.div`
+export const UserImageForList = styled.img`
     width: 40px;
     height: 40px;
     background: #D9D9D9;
