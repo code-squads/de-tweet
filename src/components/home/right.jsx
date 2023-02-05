@@ -110,18 +110,13 @@ const Right = () => {
 
     const [queryParam, setQueryParam] = useState('');
     const [users, setUsers] = useState([]);
-    const [filteredUsers, setFilteredUsers] = useState([]);
-    
-    const filterAfterGettingUsers = () => {
-            const res = users.filter(user => user.name.toLowerCase().includes(queryParam.toLowerCase()));
-            setFilteredUsers(res);
-    }
+
+    const filteredUsers = users ? users.filter(user => user.fname.toLowerCase().includes(queryParam.toLowerCase())) : [];
 
     useEffect(() => {
       getAllUsers()
         .then(users => {
             setUsers(users);
-            filterAfterGettingUsers();
             console.log("All users:", users);
         })
     }, [])
@@ -151,7 +146,7 @@ const Right = () => {
 
             <UsersContainer>
                 <SearchContainer>
-                    <SearchInput type="text" value={queryParam} onChange={e => {setQueryParam(e.target.value);filterAfterGettingUsers()}} id="searchInput" placeholder="Search User"></SearchInput>
+                    <SearchInput type="text" value={queryParam} onChange={e => {setQueryParam(e.target.value)}} id="searchInput" placeholder="Search User"></SearchInput>
                     <SearchIcon>
                         <FontAwesomeSearch icon={faSearch} />
                     </SearchIcon>
