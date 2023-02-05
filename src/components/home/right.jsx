@@ -63,8 +63,6 @@ const Right = () => {
     const filteredUsers = users ? users.filter(user => (user.fname + user.lname + user.bio).toLowerCase().includes(queryParam.toLowerCase())) : [];
     const filteredMyFollowingUsers = users ? users.filter(user => (user.fname + user.lname + user.bio).toLowerCase().includes(queryParam.toLowerCase())) : [];
 
-    const filteredFollowingUsers = users ? users.filter(user => (user.fname + user.lname + user.bio).toLowerCase().includes(queryParam.toLowerCase())) : [];
-
     useEffect(() => {
         if (!entityInfo)
             return;
@@ -86,58 +84,82 @@ const Right = () => {
             .then(followingUsers => {
                 setFollowingUsers(followingUsers.filter(followingUser => followingUser.myAddress.toLowerCase() !== entityInfo?.address.toLowerCase()));
                 console.log("All users:", followingUsers);
+            });
+    }, [entityInfo, refetch]);
 
-            }, [entityInfo, refetch]);
-    });
-
-        useEffect(() => {
-            setUsers(newUsers => newUsers.filter(user => user.myAddress.toLowerCase() !== entityInfo?.address.toLowerCase()));
-            setFollowingUsers(newFollowingUsers => newFollowingUsers.filter(followingUser => followingUser.myAddress.toLowerCase() !== entityInfo?.address.toLowerCase()));
-        }, [entityInfo]);
-
-
-        function Follow(targetAddress, fname) {
-            follow(entityInfo?.address, targetAddress)
-                .then(() => {
-                    toast.success("Followed " + fname);
-                    setRefetch(Math.random())
-                });
-        }
-        function UnFollow(targetAddress, fname) {
-            unFollow(entityInfo?.address, targetAddress)
-                .then(() => {
-                    toast.success("Unfollowed " + fname);
-                    setRefetch(Math.random())
-                });
-        }
+    useEffect(() => {
+        setUsers(newUsers => newUsers.filter(user => user.myAddress.toLowerCase() !== entityInfo?.address.toLowerCase()));
+        setFollowingUsers(newFollowingUsers => newFollowingUsers.filter(followingUser => followingUser.myAddress.toLowerCase() !== entityInfo?.address.toLowerCase()));
+    }, [entityInfo]);
 
 
-        return (
-            <>
-                <TotalUsersInfoContainer>
-                    <UserListLabel>My Following</UserListLabel>
-                    <TotalUserCount>
-                        {followingUsers.length}
-                    </TotalUserCount>
-                </TotalUsersInfoContainer>
+    function Follow(targetAddress, fname) {
+        follow(entityInfo?.address, targetAddress)
+            .then(() => {
+                toast.success("Followed " + fname);
+                setRefetch(Math.random())
+            });
+    }
+    function UnFollow(targetAddress, fname) {
+        unFollow(entityInfo?.address, targetAddress)
+            .then(() => {
+                toast.success("Unfollowed " + fname);
+                setRefetch(Math.random())
+            });
+    }
 
-                <UsersContainer>
-                    <SearchContainer>
-                        <SearchInput type="text" value={queryParam} onChange={e => { setQueryParam(e.target.value) }} id="searchInput" placeholder="Search User"></SearchInput>
-                        <SearchIcon>
-                            <FontAwesomeSearch icon={faSearch} />
-                        </SearchIcon>
-                    </SearchContainer>
-                    <UsersListContainer>
-                        {filteredMyFollowingUsers.length > 0
-                            ? filteredMyFollowingUsers.map((user, index) => {
+
+    return (
+        <>
+            <TotalUsersInfoContainer>
+                <UserListLabel>My Following</UserListLabel>
+                <TotalUserCount>
+                    {followingUsers.length}
+                </TotalUserCount>
+            </TotalUsersInfoContainer>
+
+            <UsersContainer>
+                <SearchContainer>
+                    <SearchInput type="text" value={queryParam} onChange={e => { setQueryParam(e.target.value) }} id="searchInput" placeholder="Search User"></SearchInput>
+                    <SearchIcon>
+                        <FontAwesomeSearch icon={faSearch} />
+                    </SearchIcon>
+                </SearchContainer>
+                <UsersListContainer>
+                    {users.length > 0
+                        ? users.filter(user => followingSet.has(user.myAddress)).map((user, index) => {
+                            return (
+                                <UserRow key={index}>
+                                    <User>
+                                        <UserImageForList src={getSrc(user?.gender, user?.avatar)}></UserImageForList>
+                                        <UserDetails>
+                                            <UserName2>{`${user.fname} ${user.lname}`}</UserName2>
+                                            <ShortDesc2>{user['bio']}</ShortDesc2>
+                                        </UserDetails>
+                                    </User>
+                                    {
+                                        followingSet.has(user?.myAddress) ?
+                                            <FollowButton onClick={() => UnFollow(user.myAddress, user.fname)}>
+                                                Unfollow
+                                            </FollowButton>
+                                            :
+                                            <></>
+                                            // <FollowButton onClick={() => Follow(user.myAddress, user.lname)}>
+                                            //     Follow
+                                            // </FollowButton>
+                                    }
+                                </UserRow>
+                            );
+                        })
+                        : users.length === 0 && queryParam.length > 0 ? <NoUserContainer>Sorry no user found :(</NoUserContainer>
+                            : filteredMyFollowingUsers.filter(user => followingSet.has(user.myAddress)).map((user) => {
                                 return (
-                                    <UserRow key={index}>
+                                    <UserRow key={user.id}>
                                         <User>
-                                            <UserImageForList src={getSrc(user?.gender, user?.avatar)}></UserImageForList>
+                                            <UserImageForList />
                                             <UserDetails>
-                                                <UserName2>{`${user.fname} ${user.lname}`}</UserName2>
-                                                <ShortDesc2>{user['bio']}</ShortDesc2>
+                                                <UserName2>{user.name}</UserName2>
+                                                <ShortDesc2>{user.shortDesc}</ShortDesc2>
                                             </UserDetails>
                                         </User>
                                         {
@@ -147,65 +169,61 @@ const Right = () => {
                                                 </FollowButton>
                                                 :
                                                 <></>
-                                                // <FollowButton onClick={() => Follow(user.myAddress, user.lname)}>
-                                                //     Follow
-                                                // </FollowButton>
                                         }
                                     </UserRow>
                                 );
-                            })
-                            : filteredMyFollowingUsers.length === 0 && queryParam.length > 0 ? <NoUserContainer>Sorry no user found :(</NoUserContainer>
-                                : followingUsers.map((user) => {
-                                    return (
-                                        <UserRow key={user.id}>
-                                            <User>
-                                                <UserImageForList />
-                                                <UserDetails>
-                                                    <UserName2>{user.name}</UserName2>
-                                                    <ShortDesc2>{user.shortDesc}</ShortDesc2>
-                                                </UserDetails>
-                                            </User>
-                                            {
-                                                followingSet.has(user?.myAddress) ?
-                                                    <FollowButton onClick={() => UnFollow(user.myAddress, user.fname)}>
-                                                        Unfollow
-                                                    </FollowButton>
-                                                    :
-                                                    <></>
-                                                    // <FollowButton onClick={() => Follow(user.myAddress, user.fname)}>
-                                                    //     Follow
-                                                    // </FollowButton>
-                                            }
-                                        </UserRow>
-                                    );
-                                })}
-                    </UsersListContainer>
-                </UsersContainer>
+                            })}
+                </UsersListContainer>
+            </UsersContainer>
 
-                <TotalUsersInfoContainer>
-                    <UserListLabel>All Users</UserListLabel>
-                    <TotalUserCount>
-                        {users.length}
-                    </TotalUserCount>
-                </TotalUsersInfoContainer>
+            <TotalUsersInfoContainer>
+                <UserListLabel>All Users</UserListLabel>
+                <TotalUserCount>
+                    {users.length}
+                </TotalUserCount>
+            </TotalUsersInfoContainer>
 
-                <UsersContainer>
-                    <SearchContainer>
-                        <SearchInput type="text" value={queryParam} onChange={e => { setQueryParam(e.target.value) }} id="searchInput" placeholder="Search User"></SearchInput>
-                        <SearchIcon>
-                            <FontAwesomeSearch icon={faSearch} />
-                        </SearchIcon>
-                    </SearchContainer>
-                    <UsersListContainer>
-                        {filteredUsers.length > 0
-                            ? filteredUsers.map((user, index) => {
+            <UsersContainer>
+                <SearchContainer>
+                    <SearchInput type="text" value={queryParam} onChange={e => { setQueryParam(e.target.value) }} id="searchInput" placeholder="Search User"></SearchInput>
+                    <SearchIcon>
+                        <FontAwesomeSearch icon={faSearch} />
+                    </SearchIcon>
+                </SearchContainer>
+                <UsersListContainer>
+                    {filteredUsers.length > 0
+                        ? filteredUsers.map((user, index) => {
+                            return (
+                                <UserRow key={index}>
+                                    <User>
+                                        <UserImageForList src={getSrc(user?.gender, user?.avatar)}></UserImageForList>
+                                        <UserDetails>
+                                            <UserName2>{`${user.fname} ${user.lname}`}</UserName2>
+                                            <ShortDesc2>{user['bio']}</ShortDesc2>
+                                        </UserDetails>
+                                    </User>
+                                    {
+                                        followingSet.has(user?.myAddress) ?
+                                            <FollowButton onClick={() => UnFollow(user.myAddress, user.fname)}>
+                                                Unfollow
+                                            </FollowButton>
+                                            :
+                                            <FollowButton onClick={() => Follow(user.myAddress, user.lname)}>
+                                                Follow
+                                            </FollowButton>
+                                    }
+                                </UserRow>
+                            );
+                        })
+                        : filteredUsers.length === 0 && queryParam.length > 0 ? <NoUserContainer>Sorry no user found :(</NoUserContainer>
+                            : users.map((user) => {
                                 return (
-                                    <UserRow key={index}>
+                                    <UserRow key={user.id}>
                                         <User>
-                                            <UserImageForList src={getSrc(user?.gender, user?.avatar)}></UserImageForList>
+                                            <UserImageForList />
                                             <UserDetails>
-                                                <UserName2>{`${user.fname} ${user.lname}`}</UserName2>
-                                                <ShortDesc2>{user['bio']}</ShortDesc2>
+                                                <UserName2>{user.name}</UserName2>
+                                                <ShortDesc2>{user.shortDesc}</ShortDesc2>
                                             </UserDetails>
                                         </User>
                                         {
@@ -214,43 +232,19 @@ const Right = () => {
                                                     Unfollow
                                                 </FollowButton>
                                                 :
-                                                <FollowButton onClick={() => Follow(user.myAddress, user.lname)}>
+                                                <FollowButton onClick={() => Follow(user.myAddress, user.fname)}>
                                                     Follow
                                                 </FollowButton>
                                         }
                                     </UserRow>
                                 );
-                            })
-                            : filteredUsers.length === 0 && queryParam.length > 0 ? <NoUserContainer>Sorry no user found :(</NoUserContainer>
-                                : users.map((user) => {
-                                    return (
-                                        <UserRow key={user.id}>
-                                            <User>
-                                                <UserImageForList />
-                                                <UserDetails>
-                                                    <UserName2>{user.name}</UserName2>
-                                                    <ShortDesc2>{user.shortDesc}</ShortDesc2>
-                                                </UserDetails>
-                                            </User>
-                                            {
-                                                followingSet.has(user?.myAddress) ?
-                                                    <FollowButton onClick={() => UnFollow(user.myAddress, user.fname)}>
-                                                        Unfollow
-                                                    </FollowButton>
-                                                    :
-                                                    <FollowButton onClick={() => Follow(user.myAddress, user.fname)}>
-                                                        Follow
-                                                    </FollowButton>
-                                            }
-                                        </UserRow>
-                                    );
-                                })}
-                    </UsersListContainer>
-                </UsersContainer>
+                            })}
+                </UsersListContainer>
+            </UsersContainer>
 
 
-            </>
-        )
+        </>
+    )
 }
 
 export default Right;

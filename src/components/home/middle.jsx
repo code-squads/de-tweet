@@ -31,10 +31,11 @@ import addImages from '../../assets/addImages.svg'
 import link from '../../assets/Group 2.svg'
 import crossIcon from '../../assets/crossIcon.svg'
 import heartIcon from '../../assets/heart.png'
+import likedIcon from '../../assets/likedIcon (1).png'
 import { getSrc } from "../../constant/avatarResolver";
-import { addPost } from "../../apis/posts";
+import { addPost, hasLike, like } from "../../apis/posts";
 import { useAuth } from "../../context/customAuth";
-import { getAllUsers, getUserPosts } from "../../apis/users";
+import { getAllUsers, getFollowing, getUserPosts } from "../../apis/users";
 import moment from "moment";
 
 function awaitAll(list, asyncFn) {
@@ -57,6 +58,11 @@ const Middle = (props) => {
 
     const [allUserMap, setAllUserMap] = useState(new Map());
     const [allPosts, setAllPosts] = useState([]);
+    const [followingPosts, setFollowingPosts] = useState([]);
+    const [tempLikedPosts, setTempLikedPosts] = useState([])
+
+    const [postIndices, setPostIndices] = useState(new Map());
+    const [myLiked, setMyLiked] = useState([]);
 
 	const changeHandler = (event) => {
         setPhoto(event.target.files[0])
@@ -162,27 +168,67 @@ const Middle = (props) => {
 
 
     useEffect(() => {
-        getAllUsers()
+        if(!entityInfo)
+            return;
+
+        let allPosts = [];
+        let followingSet = new Set();
+
+        const newPostMap = new Map();
+        let userPostPromise;
+        const mylikednew  = [];
+        const userPromise = getAllUsers()
           .then(users => {
             //   set(users);
               console.log("All users:", users);
-
-              const allPosts = [];
-              awaitAll(users, async user => {
-                return await getUserPosts(user.myAddress).then(posts => allPosts.push(...posts));
+              userPostPromise = awaitAll(users, async user => {
+                return await getUserPosts(user.myAddress).then(posts => {
+                    posts.map((post, idx) =>{
+                        newPostMap.set(post, idx);
+                        let post_idx = postIndices.get(post);
+                        hasLike(post.postWriter+"_"+post_idx, entityInfo.address)
+                            .then(res => console.log(res))
+                    });
+                    allPosts.push(...posts);
+                    setPostIndices(newPostMap);
+                });
               })
                 .then(() => {
+                    setMyLiked(mylikednew);
                     allPosts.sort((x, y) => Number(y.postDate)-Number(x.postDate))
-                    console.log("All posts ready", allPosts);
+                    console.log("Track: All posts ready", allPosts);
                     setAllPosts(allPosts);
                 })
 
               const userMappping = new Map();
               users.map(user => userMappping.set(user.myAddress, user));
               setAllUserMap(userMappping);
-          })
+            
+        const followingPromise = getFollowing(entityInfo.address)
+            .then(followingList => { followingSet = new Set(followingList) })
 
-    }, []);
+        Promise.all([userPromise, userPostPromise, followingPromise])
+            .then(() => {
+                const newFollowingPosts = allPosts.filter(post => followingSet.has(post.postWriter));
+                console.log("Track: Following set", followingSet);
+                console.log("Track: All posts:", newFollowingPosts);
+                console.log("Track: Following posts:", newFollowingPosts);
+                setFollowingPosts(newFollowingPosts)
+            });
+            
+        })
+    }, [entityInfo]);
+
+
+    const onLikeClickHandler = (post) => {
+        console.log("Like post", post);
+        let post_idx = postIndices.get(post);
+        like(post.postWriter, post_idx, post.postWriter+"_"+post_idx, entityInfo.address)
+            .then(() => {
+                toast.success("Liked post !");
+            })
+        setTempLikedPosts((prevPosts) => [...prevPosts, post]);
+    }
 
     return (
         <>
@@ -214,7 +260,7 @@ const Middle = (props) => {
 
         <PostsFlexbox>
             {
-                allPosts.map(post => {
+                (feed === 'all' ? allPosts : followingPosts).map(post => {
                     const user = allUserMap.get(post.postWriter)
                     const m1 = new moment(post.postDate*1000)
                     return (
@@ -231,51 +277,13 @@ const Middle = (props) => {
                             </Text>
                             <Line/>
                             <LikeFlex>
-                                <Heart src={heartIcon}/>
+                                <Heart src={tempLikedPosts.includes(post) || myLiked.includes() ? likedIcon : heartIcon} onClick={() => onLikeClickHandler(post)}/>
                                 <LikeCount>{post.likes} Likes</LikeCount>
                             </LikeFlex>
                         </PostContainer>
                     )
                 })
             }
-            {/* <PostContainer>
-                <Row1>
-                    <ProfilePhoto2></ProfilePhoto2>
-                    <Row1Column2>
-                        <Name>Rupesh Raut</Name>
-                        <ShortDesc>18 Hours ago</ShortDesc>
-                    </Row1Column2>
-                </Row1>
-                <Text>
-                    Hello Everyone, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut laborea aliqua. ation ullamco laboris
-                </Text>
-                <Line/>
-                <LikeFlex>
-                    <Heart src={heartIcon}/>
-                    <LikeCount>20 Likes</LikeCount>
-                </LikeFlex>
-            </PostContainer> */}
-
-            {/* <PostContainer>
-                <Row1>
-                    <ProfilePhoto2></ProfilePhoto2>
-                    <Row1Column2>
-                        <Name>Rupesh Raut</Name>
-                        <ShortDesc>18 Hours ago</ShortDesc>
-                    </Row1Column2>
-                </Row1>
-                <Text>
-                    Hello Everyone, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut laborea aliqua. ation ullamco laboris
-                </Text>
-                <Line/>
-                <LikeFlex>
-                    <Heart src={heartIcon}/>
-                    <LikeCount>20 Likes</LikeCount>
-                </LikeFlex>
-            </PostContainer> */}
-
-            {/* <PostContainer></PostContainer>
-            <PostContainer></PostContainer> */}
         </PostsFlexbox>
         </>
     )
