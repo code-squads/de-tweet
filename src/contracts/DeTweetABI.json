@@ -162,6 +162,11 @@
 			{
 				"components": [
 					{
+						"internalType": "address",
+						"name": "myAddress",
+						"type": "address"
+					},
+					{
 						"internalType": "string",
 						"name": "fname",
 						"type": "string"
@@ -395,6 +400,11 @@
 		"outputs": [
 			{
 				"components": [
+					{
+						"internalType": "address",
+						"name": "myAddress",
+						"type": "address"
+					},
 					{
 						"internalType": "string",
 						"name": "fname",

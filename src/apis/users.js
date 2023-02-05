@@ -4,7 +4,7 @@ export const userRegistration = (address, userInfo) => new Promise(async (resolv
   if(!address || !userInfo)
     return reject("Invalid inputs");
 
-  console.log(
+  const tx = DeTweetContract.methods.userRegistration(
     userInfo.fName,
     userInfo.lName,
     userInfo.bio,
@@ -13,7 +13,35 @@ export const userRegistration = (address, userInfo) => new Promise(async (resolv
     userInfo.country,
     userInfo.birthdate,
     userInfo.gender,
-  )
+  );
+  console.log("New record transaction: ", tx);
+  tx
+    .send({
+      from: address
+    })
+    .then(receipt => {
+      console.log("Tx Receipt", receipt);
+      console.log(`Transaction hash: ${receipt?.transactionHash}`);
+      console.log(
+        `View the transaction here: `,
+        linkFromTxHash(receipt?.transactionHash)
+      );
+      return resolve(receipt);
+    })
+    .catch(err => {
+      console.log("Tx err", err);
+    });
+  
+  // const gasPrice = await web3.eth.getGasPrice();
+  // const gas = (await tx.estimateGas({ from: address })) + 20000;
+  // console.log(gas, gasPrice);
+})
+
+
+export const follow = (address, userInfo) => new Promise(async (resolve, reject) => {
+  if(!address || !userInfo)
+    return reject("Invalid inputs");
+
   const tx = DeTweetContract.methods.userRegistration(
     userInfo.fName,
     userInfo.lName,

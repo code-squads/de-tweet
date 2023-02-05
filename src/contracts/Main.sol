@@ -28,6 +28,7 @@ contract Main is AdminAuthorized {
     
 
 
+
     
     // Function for User registration, only permitted to admin
     function userRegistration(
@@ -42,6 +43,7 @@ contract Main is AdminAuthorized {
     ) public returns (bool){
         require(registeredUsers[msg.sender].birthdate == 0, "User already registered");
         Data.UserData memory newRegisteredUser = Data.UserData({
+            myAddress: msg.sender,
             fname: fname,
             lname: lname,
             bio: bio,
