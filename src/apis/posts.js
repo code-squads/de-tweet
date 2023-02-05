@@ -1,4 +1,4 @@
-import DeTweetContract from "./DeTweetContract";
+import DeTweetContract, { web3, linkFromTxHash } from "./DeTweetContract";
 
 export const getPost = (postWriterAddress, postIndex) => new Promise((resolve, reject) => {
   if(!postWriterAddress || (!postIndex && postIndex !== 0))
@@ -37,3 +37,33 @@ export const getUserPosts = (postWriterAddress) => new Promise((resolve, reject)
         reject(new Error(`Couldn't fetch info for address ${postWriterAddress}`));
     });
 });
+
+export const addPost = (address, postDetails) =>  new Promise(async (resolve, reject) => {
+  if(!address || !postDetails)
+    return reject("Invalid inputs");
+
+  const tx = DeTweetContract.methods.addPost(
+    postDetails.text,
+    postDetails.postDate,
+    postDetails.reportMsg,
+    postDetails.cids,
+    postDetails.titles
+  );
+  console.log("New record transaction: ", tx);
+  tx
+    .send({
+      from: address
+    })
+    .then(receipt => {
+      console.log("Tx Receipt", receipt);
+      console.log(`Transaction hash: ${receipt?.transactionHash}`);
+      console.log(
+        `View the transaction here: `,
+        linkFromTxHash(receipt?.transactionHash)
+      );
+      return resolve(receipt);
+    })
+    .catch(err => {
+      console.log("Tx err", err);
+    });
+})

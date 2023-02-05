@@ -18,6 +18,7 @@ library Data{
     // Object to store basic information about the user
     // This can be added/modified only by the user 
     struct UserData {
+        address myAddress;
         string fname;
         string lname;
         string bio;

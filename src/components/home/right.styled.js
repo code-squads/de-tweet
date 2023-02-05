@@ -169,6 +169,7 @@ export const FollowButton = styled.button`
   padding: 4px 10px;
   border: none;
   outline: none;
+  cursor: pointer;
 `
 
 export const SearchInput = styled.input`
