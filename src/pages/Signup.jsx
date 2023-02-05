@@ -86,6 +86,7 @@ const Signup = () => {
     
     setTimeout(() => {
       console.log("Redirect to profile !");
+      navigate()
     }, 10000);
   };
 
