@@ -33,53 +33,61 @@ import Copy from '../../assets/copyIcon.png'
 import { useAuth } from "../../context/customAuth";
 import { getFollowersCount, getFollowingCount, getUserInfo, getUserPosts } from "../../apis/users";
 import { toast } from "react-toastify";
+import { Navigate, useNavigate } from "react-router-dom";
+import { Avatars, getSrc } from "../../constant/avatarResolver";
 
 
-const Left = () => {
+const Left = (props) => {
     const { loggedIn, entityInfo } = useAuth();
 
     const [fetching, setFetching] = useState(true);
-    const [userInfo, setUserInfo] = useState(null);
-    const [userMetaData, setUserMetaData] = useState({
-        followers: 50,
-        following: 50,
-        postsLiked: 50,
-        posts: 50,
-    })
+    const [userInfo, setUserInfo] = useState(props.userInfo);
+
+    const navigate = useNavigate()
+    const [userMetaData, setUserMetaData] = useState(props.userMetaData)
 
     useEffect(() => {
-        if(!entityInfo)
-            return;
-        const userAddress = entityInfo.address;
-        console.log("Fetching info for", userAddress);
-        getUserInfo(userAddress)
-            .then(user => {
-                console.log(user);
-                setUserInfo(user);
-                setUserMetaData(prev => ({ ...prev, postsLiked: user.likedPostsCount }));
-            });
-        getFollowersCount(userAddress)
-            .then(followers => setUserMetaData(prev => ({ ...prev,  followers })));
-        getFollowingCount(userAddress)
-            .then(following => setUserMetaData(prev => ({ ...prev,  following })));
-        getUserPosts(userAddress)
-            .then(posts => {
-                console.log("Users' posts", posts);
-                setUserMetaData(prev => ({ ...prev, posts: posts.length }))
-            });
+        setUserInfo(props.userInfo)
+        setUserMetaData(props.userMetaData)
+    }, [props.userInfo, props.userMetaData])
+
+    // useEffect(() => {
+    //     if(!entityInfo)
+    //         return;
+    //     const userAddress = entityInfo.address;
+    //     console.log("Fetching info for", userAddress);
+    //     getUserInfo(userAddress)
+    //         .then(user => {
+    //             if(user.birthdate == '0') {
+    //                 navigate('/signup')
+    //             }
+    //             console.log(user);
+    //             setUserInfo(user);
+    //             setUserMetaData(prev => ({ ...prev, postsLiked: user.likedPostsCount }));
+    //         });
+    //     getFollowersCount(userAddress)
+    //         .then(followers => setUserMetaData(prev => ({ ...prev,  followers })));
+    //     getFollowingCount(userAddress)
+    //         .then(following => setUserMetaData(prev => ({ ...prev,  following })));
+    //     getUserPosts(userAddress)
+    //         .then(posts => {
+    //             console.log("Users' posts", posts);
+    //             setUserMetaData(prev => ({ ...prev, posts: posts.length }))
+    //         });
         
-    }, [entityInfo])
+    // }, [entityInfo])
 
     const CopyToClipboard = (text) => {
         navigator.clipboard.writeText(text);
         toast.success('Copied to clipboard !');
     }
+
     
     return (
         <>
             <MyProfileContainer>
                 <Row1>
-                    <ProfilePhoto></ProfilePhoto>
+                    <ProfilePhoto src={getSrc(userInfo?.gender, userInfo?.avatar)}></ProfilePhoto>
                     <Row1Column2>
                         <Name>
                             {

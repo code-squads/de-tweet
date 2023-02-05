@@ -11,6 +11,7 @@ contract Main is AdminAuthorized {
     // Each user's address corresponds to the Data.UserData
     // eg.   0xab32......2c   =>   Data.UserData{.....}
     mapping(address => Data.UserData) registeredUsers;
+    Data.UserData[] allRegisteredUsers;
 
 
     // Store a list/array of posts for each user separately
@@ -27,6 +28,7 @@ contract Main is AdminAuthorized {
     
 
 
+
     
     // Function for User registration, only permitted to admin
     function userRegistration(
@@ -41,6 +43,7 @@ contract Main is AdminAuthorized {
     ) public returns (bool){
         require(registeredUsers[msg.sender].birthdate == 0, "User already registered");
         Data.UserData memory newRegisteredUser = Data.UserData({
+            myAddress: msg.sender,
             fname: fname,
             lname: lname,
             bio: bio,
@@ -52,6 +55,7 @@ contract Main is AdminAuthorized {
             likedPostsCount: 0
         });
         registeredUsers[msg.sender] = newRegisteredUser;
+        allRegisteredUsers.push(newRegisteredUser);
         return true;
     }
 
@@ -77,6 +81,11 @@ contract Main is AdminAuthorized {
         targetUser.birthdate = birthdate;
         targetUser.gender = gender;
         return true;
+    }
+
+    // Get all user info
+    function getAllUsers() public view returns (Data.UserData[] memory){
+        return allRegisteredUsers;
     }
 
     // Get information about specified user
