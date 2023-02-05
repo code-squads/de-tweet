@@ -155,67 +155,58 @@ const Left = (props) => {
                     <ColumnName2>spent</ColumnName2>
                 </ColumnNames>
                 <MostLikedPersonsRow>
-                    <ProfilePhoto2/>
+                    <ProfilePhoto2 src={getSrc('0', 'm2')}/>
                     <MostLikedPersonsRowColumn2>
-                        <Name2>John Walker</Name2>
-                        <ShortDesc2>Famous Scientist</ShortDesc2>
+                        <Name2>Allan Walker</Name2>
+                        <ShortDesc2>Famous Singer</ShortDesc2>
                     </MostLikedPersonsRowColumn2>
-                    <PostsLiked>10</PostsLiked>
-                    <Spent>1.758</Spent>
+                    <PostsLiked>34</PostsLiked>
+                    <Spent>8.758</Spent>
                 </MostLikedPersonsRow>
                 <MostLikedPersonsRow>
-                    <ProfilePhoto2/>
+                    <ProfilePhoto2 src={getSrc('1', 'f1')}/>
                     <MostLikedPersonsRowColumn2>
-                        <Name2>John Walker</Name2>
-                        <ShortDesc2>Famous Scientist</ShortDesc2>
+                        <Name2>Beyounce Knowles</Name2>
+                        <ShortDesc2>Singer | Actress</ShortDesc2>
                     </MostLikedPersonsRowColumn2>
                     <PostsLiked>10</PostsLiked>
-                    <Spent>1.758</Spent>
+                    <Spent>7.758</Spent>
                 </MostLikedPersonsRow>
                 <MostLikedPersonsRow>
-                    <ProfilePhoto2/>
+                    <ProfilePhoto2 src={getSrc('1', 'f2')}/>
                     <MostLikedPersonsRowColumn2>
-                        <Name2>John Walker</Name2>
-                        <ShortDesc2>Famous Scientist</ShortDesc2>
+                        <Name2>Emma Watson</Name2>
+                        <ShortDesc2>Actress</ShortDesc2>
                     </MostLikedPersonsRowColumn2>
-                    <PostsLiked>10</PostsLiked>
-                    <Spent>1.758</Spent>
+                    <PostsLiked>13</PostsLiked>
+                    <Spent>5.230</Spent>
                 </MostLikedPersonsRow>
                 <MostLikedPersonsRow>
-                    <ProfilePhoto2/>
+                    <ProfilePhoto2 src={getSrc('1', 'f4')}/>
                     <MostLikedPersonsRowColumn2>
-                        <Name2>John Walker</Name2>
-                        <ShortDesc2>Famous Scientist</ShortDesc2>
+                        <Name2>Peggy Janes</Name2>
+                        <ShortDesc2>Athlete</ShortDesc2>
                     </MostLikedPersonsRowColumn2>
                     <PostsLiked>10</PostsLiked>
-                    <Spent>1.758</Spent>
+                    <Spent>3.123</Spent>
                 </MostLikedPersonsRow>
                 <MostLikedPersonsRow>
-                    <ProfilePhoto2/>
+                    <ProfilePhoto2 src={getSrc('0', 'm2')}/>
                     <MostLikedPersonsRowColumn2>
-                        <Name2>John Walker</Name2>
+                        <Name2>Jake Brain</Name2>
                         <ShortDesc2>Famous Scientist</ShortDesc2>
                     </MostLikedPersonsRowColumn2>
-                    <PostsLiked>10</PostsLiked>
-                    <Spent>1.758</Spent>
+                    <PostsLiked>43</PostsLiked>
+                    <Spent>4.212</Spent>
                 </MostLikedPersonsRow>
                 <MostLikedPersonsRow>
-                    <ProfilePhoto2/>
+                    <ProfilePhoto2 src={getSrc('0', 'm3')}/>
                     <MostLikedPersonsRowColumn2>
-                        <Name2>John Walker</Name2>
-                        <ShortDesc2>Famous Scientist</ShortDesc2>
+                        <Name2>Bradd Pitt</Name2>
+                        <ShortDesc2>Scientist</ShortDesc2>
                     </MostLikedPersonsRowColumn2>
-                    <PostsLiked>10</PostsLiked>
-                    <Spent>1.758</Spent>
-                </MostLikedPersonsRow>
-                <MostLikedPersonsRow>
-                    <ProfilePhoto2/>
-                    <MostLikedPersonsRowColumn2>
-                        <Name2>John Walker</Name2>
-                        <ShortDesc2>Famous Scientist</ShortDesc2>
-                    </MostLikedPersonsRowColumn2>
-                    <PostsLiked>10</PostsLiked>
-                    <Spent>1.758</Spent>
+                    <PostsLiked>23</PostsLiked>
+                    <Spent>0.342</Spent>
                 </MostLikedPersonsRow>
             </PersonsWhoLikedMostPostsContainer>
         </>
