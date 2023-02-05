@@ -153,10 +153,10 @@ export const Row1 = styled.div`
     align-items: center;
 `  
 
-export const ProfilePhoto2 = styled.div`
+export const ProfilePhoto2 = styled.img`
     width: 40px;
     height: 40px;
-    background: #D9D9D9;
+    /* background: #D9D9D9; */
     border-radius: 10px;
 `
 

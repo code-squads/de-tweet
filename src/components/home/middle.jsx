@@ -34,6 +34,18 @@ import heartIcon from '../../assets/heart.png'
 import { getSrc } from "../../constant/avatarResolver";
 import { addPost } from "../../apis/posts";
 import { useAuth } from "../../context/customAuth";
+import { getAllUsers, getUserPosts } from "../../apis/users";
+import moment from "moment";
+
+function awaitAll(list, asyncFn) {
+    const promises = [];
+  
+    list.forEach(x => {
+      promises.push(asyncFn(x));
+    });
+  
+    return Promise.all(promises);
+  }
 
 const Middle = (props) => {
     const { entityInfo } = useAuth()
@@ -42,6 +54,9 @@ const Middle = (props) => {
     const [photo, setPhoto] = useState(null)
     const[feed, setFeed] = useState("all")
     const [userInfo, setUserInfo] = useState(props.userInfo);
+
+    const [allUserMap, setAllUserMap] = useState(new Map());
+    const [allPosts, setAllPosts] = useState([]);
 
 	const changeHandler = (event) => {
         setPhoto(event.target.files[0])
@@ -117,6 +132,10 @@ const Middle = (props) => {
             addPost(entityInfo.address, post)
             .then(receipt => {
                 toast.success('Tweeted Successfully!');
+                setTimeout(() => {
+                    window.location.reload()
+                }, 2000)
+                setTweetText("")
             })
             .catch(error => {
                 toast.error('Some Error Occured', {
@@ -136,9 +155,34 @@ const Middle = (props) => {
         }
     // };
 
+
     useEffect(() => {
-        setUserInfo(props.userInfo)
-    }, [props.userInfo])
+        setUserInfo(props.userInfo);
+    }, [props.userInfo]);
+
+
+    useEffect(() => {
+        getAllUsers()
+          .then(users => {
+            //   set(users);
+              console.log("All users:", users);
+
+              const allPosts = [];
+              awaitAll(users, async user => {
+                return await getUserPosts(user.myAddress).then(posts => allPosts.push(...posts));
+              })
+                .then(() => {
+                    allPosts.sort((x, y) => Number(y.postDate)-Number(x.postDate))
+                    console.log("All posts ready", allPosts);
+                    setAllPosts(allPosts);
+                })
+
+              const userMappping = new Map();
+              users.map(user => userMappping.set(user.myAddress, user));
+              setAllUserMap(userMappping);
+          })
+
+    }, []);
 
     return (
         <>
@@ -169,7 +213,32 @@ const Middle = (props) => {
         </TogglerContainer>
 
         <PostsFlexbox>
-            <PostContainer>
+            {
+                allPosts.map(post => {
+                    const user = allUserMap.get(post.postWriter)
+                    const m1 = new moment(post.postDate*1000)
+                    return (
+                        <PostContainer>
+                            <Row1>
+                                <ProfilePhoto2 src={getSrc(user.gender, user.avatar)}/>
+                                <Row1Column2>
+                                    <Name>{user.fname} {user.lname}</Name>
+                                    <ShortDesc>{m1.fromNow()}</ShortDesc>
+                                </Row1Column2>
+                            </Row1>
+                            <Text>
+                                {post.text}
+                            </Text>
+                            <Line/>
+                            <LikeFlex>
+                                <Heart src={heartIcon}/>
+                                <LikeCount>{post.likes} Likes</LikeCount>
+                            </LikeFlex>
+                        </PostContainer>
+                    )
+                })
+            }
+            {/* <PostContainer>
                 <Row1>
                     <ProfilePhoto2></ProfilePhoto2>
                     <Row1Column2>
@@ -185,9 +254,9 @@ const Middle = (props) => {
                     <Heart src={heartIcon}/>
                     <LikeCount>20 Likes</LikeCount>
                 </LikeFlex>
-            </PostContainer>
+            </PostContainer> */}
 
-            <PostContainer>
+            {/* <PostContainer>
                 <Row1>
                     <ProfilePhoto2></ProfilePhoto2>
                     <Row1Column2>
@@ -203,7 +272,7 @@ const Middle = (props) => {
                     <Heart src={heartIcon}/>
                     <LikeCount>20 Likes</LikeCount>
                 </LikeFlex>
-            </PostContainer>
+            </PostContainer> */}
 
             {/* <PostContainer></PostContainer>
             <PostContainer></PostContainer> */}
