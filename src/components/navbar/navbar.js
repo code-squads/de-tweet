@@ -80,7 +80,7 @@ const Disconnect = styled.div`
 
 const Navbar = () => {
     const navigate = useNavigate()
-    const { entityInfo } = useAuth()
+    const { entityInfo, login } = useAuth()
     const [loggedInState, setLoggedInState] = useState(false)
     const [loggedInState2, setLoggedInState2] = useState(false)
     
@@ -96,6 +96,25 @@ const Navbar = () => {
             navigate('/')
     }
 
+    const disconnectWallet = async () => {
+         await window.ethereum.request({
+            method: "eth_requestAccounts",
+            params: [
+              {
+                eth_accounts: {}
+              }
+            ]
+          });
+        await window.ethereum.request({
+            method: "wallet_requestPermissions",
+            params: [
+            {
+                eth_accounts: {}
+            }
+            ]
+        });
+    }
+
     const onLoginClickHandler = () => {
         if(entityInfo) {
             getUserInfo()
@@ -104,16 +123,17 @@ const Navbar = () => {
             })
         }
         else {
-            toast.error('No Previous Account Found!', {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            login();
+            // toast.error('No Previous Account Found!', {
+            //     position: "top-right",
+            //     autoClose: 2000,
+            //     hideProgressBar: false,
+            //     closeOnClick: true,
+            //     pauseOnHover: true,
+            //     draggable: true,
+            //     progress: undefined,
+            //     theme: "light",
+            // });
         }
         
     }
@@ -142,7 +162,7 @@ const Navbar = () => {
             <AppName onClick={onAppNameClickHandler}>DeTweet</AppName>
             {!loggedInState && <Login onClick={onLoginClickHandler}>Login</Login>}
             {!loggedInState && <Signup onClick={onSignupClickHandler}>Sign Up</Signup>}
-            {loggedInState && <Disconnect>Disconnect &#9679;</Disconnect>}
+            {loggedInState && <Disconnect onClick={disconnectWallet}>Disconnect &#9679;</Disconnect>}
         </NavbarContainer>
     )
 }

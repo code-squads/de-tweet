@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import { useMetamask } from 'use-metamask'
 import { toast } from "react-toastify";
 
@@ -48,6 +49,7 @@ const AuthProvider = (props) => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [isProcessingLogin, setIsProcessingLogin] = useState(true);
   const [metamaskNotFound, setMetamaskNotFound] = useState(true);
+  const navigate = useNavigate();
   
   const [entityInfo, setEntityInfo] = useState(null);
   const [data, setData] = useState(null);
@@ -95,6 +97,7 @@ const AuthProvider = (props) => {
                   progress: undefined,
                   theme: "light",
                 });
+                navigate('/home');
               } else {
                 throw new Error('Metamask connected, but got no accounts', accounts);
               }

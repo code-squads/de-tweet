@@ -4,6 +4,10 @@ import { toast } from "react-toastify";
 
 import sallySvg1 from "../assets/SalySvg1.svg";
 import sallySvg2 from "../assets/SalySvg2.svg";
+
+import SignupBg from "../assets/SignupBg.png";
+import SignupGuy from "../assets/SignupGuy.png";
+
 import linkSvg from "../assets/LinkSvg.svg";
 import Navbar from "../components/navbar/navbar";
 import { useAuth } from "../context/customAuth";
@@ -111,10 +115,10 @@ const Signup = () => {
 
         <div className="flex-1">
           <div className="sally-img2">
-            <img src={sallySvg2} alt="" />
+            <img src={SignupBg} alt="" />
           </div>
           <div className="sally-img1">
-            <img src={sallySvg1} alt="" />
+            <img src={SignupGuy} alt="" />
           </div>
           <div className="title">
             <div className="primary-title">Lets create an account</div>
