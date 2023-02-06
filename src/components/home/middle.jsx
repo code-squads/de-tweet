@@ -79,19 +79,18 @@ const Middle = (props) => {
     }
 
     const checkHateSpeech = async () => {
-        // const token = await fetch('https://developer.expert.ai/oauth2/token', {
-        //     method: 'POST',
-        //     headers: {
-        //     'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({
-        //         username: 'secretcoders1@gmail.com',
-        //         password: 'Secretcoders@01'
-        //     })
-        // });
-        // // console.log(token.json);
+        const response = await fetch('https://developer.expert.ai/oauth2/token', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: process.env.REACT_APP_EXPERT_AI_ID,
+                password: process.env.REACT_APP_EXPERT_AI_PASS
+            })
+        });
+        const token = await response.text();
 
-        const token = process.env.REACT_APP_HATE_SPEECH_TOKEN;
         const result = await fetch('https://nlapi.expert.ai/v2/detect/hate-speech/en', {
             method: 'POST',
             headers: {
