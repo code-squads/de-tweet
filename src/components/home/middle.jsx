@@ -37,6 +37,7 @@ import { addPost, hasLike, like } from "../../apis/posts";
 import { useAuth } from "../../context/customAuth";
 import { getAllUsers, getFollowing, getUserPosts } from "../../apis/users";
 import moment from "moment";
+import axios from "axios";
 
 function awaitAll(list, asyncFn) {
     const promises = [];
@@ -79,18 +80,24 @@ const Middle = (props) => {
     }
 
     const checkHateSpeech = async () => {
-        const response = await fetch('https://developer.expert.ai/oauth2/token', {
-            method: 'POST',
-            headers: {
-            'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
+        const response = await axios.post('https://developer.expert.ai/oauth2/token', 
+            {
                 username: process.env.REACT_APP_EXPERT_AI_ID,
                 password: process.env.REACT_APP_EXPERT_AI_PASS
-            })
-        });
-        const token = await response.text();
+            },
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            }
+        );
+        // console.log("Response", response);
+        const token = response.data;
+        // console.log("Token:",token);
 
+
+        // const token = process.env.REACT_APP_HATE_SPEECH_TOKEN;
         const result = await fetch('https://nlapi.expert.ai/v2/detect/hate-speech/en', {
             method: 'POST',
             headers: {
@@ -215,7 +222,7 @@ const Middle = (props) => {
         })
     }, [entityInfo]);
 
-    console.log("My liked", myLiked);
+    // console.log("My liked", myLiked);
 
     const onLikeClickHandler = (post) => {
         console.log("Like post", post);
