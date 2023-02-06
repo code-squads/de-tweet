@@ -82,8 +82,8 @@ const Middle = (props) => {
     const checkHateSpeech = async () => {
         const response = await axios.post('https://developer.expert.ai/oauth2/token', 
             {
-                username: 'secretcoders1@gmail.com',
-                password: 'Secretcoders@01'
+                username: process.env.REACT_APP_EXPERT_AI_ID,
+                password: process.env.REACT_APP_EXPERT_AI_PASS
             },
             {
                 method: 'POST',
