@@ -1,7 +1,9 @@
 import React from 'react'
-import Navbar from "../components/navbar/navbar";
-import LandingSvg from "../assets/LandingSvg.svg"
 import { useNavigate } from 'react-router-dom';
+
+import Navbar from "../components/navbar/navbar";
+import LandingBg from "../assets/LandingBg.png";
+
 import './LandingPage.css'
 
 const LandingPage = () => {
@@ -12,7 +14,7 @@ const LandingPage = () => {
       <div className='landing-page'>
             <div className='landing-container'>
                 <div className='landing-svg'> 
-                    <img src={LandingSvg} alt=""/>
+                    <img src={LandingBg} alt=""/>
                 </div>
                 <div className='primary-landing-text'>
                     A Decentralized Platform to express your opinions

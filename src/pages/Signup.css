@@ -39,14 +39,21 @@ body{
 }
 .sally-img2{
   position: absolute;
-    margin-top: -40px;
+  margin-top: -40px;
+}
+.sally-img2 img {
+  /* max-width: 720px; */
+  max-width: 50vw;
 }
 .sally-img1{
   position: absolute;
  justify-content: center;
  margin: 15% 0 0 10%;
 }
-
+.sally-img1 img{
+  /* max-width: 395px; */
+  max-width: 30vw;
+}
 /* Flex 2 styling */
 
 .flex-2 {

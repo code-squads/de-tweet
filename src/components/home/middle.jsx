@@ -62,15 +62,11 @@ const Middle = (props) => {
     const [tempLikedPosts, setTempLikedPosts] = useState([])
 
     const [postIndices, setPostIndices] = useState(new Map());
-    const [myLiked, setMyLiked] = useState([]);
+    const [myLiked, setMyLiked] = useState(new Set());
 
 	const changeHandler = (event) => {
         setPhoto(event.target.files[0])
         event.target.value = null
-	};
-
-	const handleSubmission = () => {
-
 	};
 
     const onButtonClick = () => {
@@ -176,25 +172,26 @@ const Middle = (props) => {
 
         const newPostMap = new Map();
         let userPostPromise;
-        const mylikednew  = [];
         const userPromise = getAllUsers()
           .then(users => {
             //   set(users);
               console.log("All users:", users);
               userPostPromise = awaitAll(users, async user => {
                 return await getUserPosts(user.myAddress).then(posts => {
-                    posts.map((post, idx) =>{
+                    posts.map((post, idx) => {
                         newPostMap.set(post, idx);
-                        let post_idx = postIndices.get(post);
+                        let post_idx = idx;
                         hasLike(post.postWriter+"_"+post_idx, entityInfo.address)
-                            .then(res => console.log(res))
+                            .then(res => {
+                                if(res)
+                                    setMyLiked(prevLiked =>  new Set(prevLiked).add(post));
+                            })
                     });
                     allPosts.push(...posts);
                     setPostIndices(newPostMap);
                 });
               })
                 .then(() => {
-                    setMyLiked(mylikednew);
                     allPosts.sort((x, y) => Number(y.postDate)-Number(x.postDate))
                     console.log("Track: All posts ready", allPosts);
                     setAllPosts(allPosts);
@@ -219,10 +216,12 @@ const Middle = (props) => {
         })
     }, [entityInfo]);
 
+    console.log("My liked", myLiked);
 
     const onLikeClickHandler = (post) => {
         console.log("Like post", post);
         let post_idx = postIndices.get(post);
+        console.log(post.postWriter, post_idx, post.postWriter+"_"+post_idx, entityInfo.address);
         like(post.postWriter, post_idx, post.postWriter+"_"+post_idx, entityInfo.address)
             .then(() => {
                 toast.success("Liked post !");
@@ -277,7 +276,10 @@ const Middle = (props) => {
                             </Text>
                             <Line/>
                             <LikeFlex>
-                                <Heart src={tempLikedPosts.includes(post) || myLiked.includes() ? likedIcon : heartIcon} onClick={() => onLikeClickHandler(post)}/>
+                                <Heart
+                                    src={tempLikedPosts.includes(post) || myLiked.has(post) ? likedIcon : heartIcon}
+                                    onClick={() => onLikeClickHandler(post)}
+                                />
                                 <LikeCount>{post.likes} Likes</LikeCount>
                             </LikeFlex>
                         </PostContainer>

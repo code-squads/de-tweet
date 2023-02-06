@@ -5,7 +5,7 @@ import DeTweetContract, { web3, linkFromTxHash } from "./DeTweetContract";
 
 
 export const like = (postWriter, post_idx, post_ref, sender) =>  new Promise(async (resolve, reject) => {
-  if(!postWriter || !post_idx)
+  if(!postWriter)
     return reject("Invalid inputs");
 
   post_ref = post_ref.toLowerCase();
@@ -86,6 +86,7 @@ export const hasLike = (post_ref, address) => new Promise((resolve, reject) => {
   if(!post_ref)
     return reject("Invalid request");
 
+  post_ref = post_ref.toLowerCase();
   // Otherwise fetch details from blockchain
   DeTweetContract.methods
     .hasLike(post_ref, address)
