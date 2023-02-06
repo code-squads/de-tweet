@@ -167,7 +167,7 @@ export const MostLikedPersonsRow = styled.div`
 
 `  
 
-export const ProfilePhoto2 = styled.div`
+export const ProfilePhoto2 = styled.img`
     width: 40px;
     height: 40px;
     background: #D9D9D9;
