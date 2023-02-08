@@ -54,13 +54,14 @@ const Notifications = [
 const Right = () => {
 
     const [queryParam, setQueryParam] = useState('');
+    const [allUserQueryParam, setAllUserQueryParam] = useState('');
     const [users, setUsers] = useState([]);
     const [followingUsers, setFollowingUsers] = useState([]);
     const { entityInfo } = useAuth();
     const [followingSet, setFollowingSet] = useState(new Set());
     const [refetch, setRefetch] = useState(-1);
 
-    const filteredUsers = users ? users.filter(user => (user.fname + user.lname + user.bio).toLowerCase().includes(queryParam.toLowerCase())) : [];
+    const filteredUsers = users ? users.filter(user => (user.fname + user.lname + user.bio).toLowerCase().includes(allUserQueryParam.toLowerCase())) : [];
     const filteredMyFollowingUsers = users ? users.filter(user => (user.fname + user.lname + user.bio).toLowerCase().includes(queryParam.toLowerCase())) : [];
 
     useEffect(() => {
@@ -114,7 +115,7 @@ const Right = () => {
             <TotalUsersInfoContainer>
                 <UserListLabel>My Following</UserListLabel>
                 <TotalUserCount>
-                    {followingUsers.length}
+                    {followingSet.size}
                 </TotalUserCount>
             </TotalUsersInfoContainer>
 
@@ -185,7 +186,7 @@ const Right = () => {
 
             <UsersContainer>
                 <SearchContainer>
-                    <SearchInput type="text" value={queryParam} onChange={e => { setQueryParam(e.target.value) }} id="searchInput" placeholder="Search User"></SearchInput>
+                    <SearchInput type="text" value={allUserQueryParam} onChange={e => { setAllUserQueryParam(e.target.value) }} id="searchInput" placeholder="Search User"></SearchInput>
                     <SearchIcon>
                         <FontAwesomeSearch icon={faSearch} />
                     </SearchIcon>
@@ -215,7 +216,7 @@ const Right = () => {
                                 </UserRow>
                             );
                         })
-                        : filteredUsers.length === 0 && queryParam.length > 0 ? <NoUserContainer>Sorry no user found :(</NoUserContainer>
+                        : filteredUsers.length === 0 && allUserQueryParam.length > 0 ? <NoUserContainer>Sorry no user found :(</NoUserContainer>
                             : users.map((user) => {
                                 return (
                                     <UserRow key={user.id}>
